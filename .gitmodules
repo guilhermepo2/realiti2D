@@ -1,0 +1,3 @@
+[submodule "Realiti2D/thirdparty/spdlog"]
+	path = Realiti2D/thirdparty/spdlog
+	url = https://github.com/gabime/spdlog.git

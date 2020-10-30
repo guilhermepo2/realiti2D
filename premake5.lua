@@ -18,7 +18,7 @@ project "Realiti2D"
     staticruntime "on"
 
     targetdir("bin/" .. outputdir .. "/%{prj.name}" )
-    objdir("bin-int" .. outputdir .. "/%{prj.name}" )
+    objdir("bin-int/" .. outputdir .. "/%{prj.name}" )
 
     files
     {
@@ -28,7 +28,8 @@ project "Realiti2D"
 
     includedirs
     {
-        "%{prj.name}/src"
+        "%{prj.name}/src",
+        "%{prj.name}/thirdparty/spdlog/include"
     }
 
     links
@@ -45,12 +46,7 @@ project "Realiti2D"
 		{
 			"R2D_ENABLE_ASSERT"
 		}
-
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-		}
-
+	
 	filter "configurations:Debug"
 		defines "R2D_DEBUG"
 		symbols "On"
@@ -79,7 +75,8 @@ project "Sandbox"
 
 	includedirs
 	{
-		"Realiti2D/src"
+		"Realiti2D/src",
+		"Realiti2D/thirdparty/spdlog/include",
 	}
 
 	links 
