@@ -6,10 +6,17 @@ workspace "Realiti2D"
         "Debug",
         "Release",
         "Dist"
-    }
+	}
+	
+	startproject "Sandbox"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
+IncludeDir["SDL2"] = "%{prj.name}/thirdparty/SDL2-2.0.12/include"
+IncludeDir["GLEW"] = "%{prj.name}/thirdparty/glew-2.1.0/include"
+LibDir = {}
+LibDir["SDL2"] = "%{prj.name}/thirdparty/SDL2-2.0.12/lib/x64"
+LibDir["GLEW"] = "%{prj.name}/thirdparty/glew-2.1.0/lib/Release/x64"
 
 project "Realiti2D"
     location "Realiti2D"
@@ -29,12 +36,22 @@ project "Realiti2D"
     includedirs
     {
         "%{prj.name}/src",
-        "%{prj.name}/thirdparty/spdlog/include"
-    }
+		"%{prj.name}/thirdparty/spdlog/include",
+		"%{IncludeDir.SDL2}",
+		"%{IncludeDir.GLEW}"
+	}
+	
+	libdirs
+	{
+		"%{LibDir.SDL2}",
+		"%{LibDir.GLEW}",
+	}
 
     links
     {
-
+		"SDL2.lib",
+		"glew32.lib",
+		"opengl32.lib"
     }
 
     filter "system:windows"
@@ -77,6 +94,8 @@ project "Sandbox"
 	{
 		"Realiti2D/src",
 		"Realiti2D/thirdparty/spdlog/include",
+		"%{IncludeDir.SDL2}",
+		"%{IncludeDir.GLEW}"
 	}
 
 	links 

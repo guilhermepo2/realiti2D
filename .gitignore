@@ -355,6 +355,8 @@ MigrationBackup/
 bin-int/
 
 # Third Party Dependencies
+!Realiti2D/thirdparty/SDL2-2.0.12/lib/x64
+!Realiti2D/thirdparty/glew-2.1.0/lib/Release/x64
 
 # Visual Studio files
 **.sln
