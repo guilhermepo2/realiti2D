@@ -1,5 +1,13 @@
-#include "Realiti2D.h"
+#include <Realiti2D.h>
 
-void RunApplication() {
-	DEBUG_INFO("Hello World!");
+class Sandbox : public Realiti2D::Application {
+public:
+	Sandbox(const float& Width, const float& Height, const std::string& Title) : Application(Width, Height, Title) {}
+	~Sandbox() {}
+private:
+
+};
+
+Realiti2D::Application* Realiti2D::CreateApplication() {
+	return new Sandbox(1024.0f, 768.0f, "Realiti2D");
 }

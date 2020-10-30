@@ -1,26 +1,23 @@
 #pragma once
 #define SDL_MAIN_HANDLED
 #include "Log.h"
-#include "Renderer/Renderer.h"
+#include "Application.h"
 
-// this is temporary
-extern void RunApplication();
+extern Realiti2D::Application* Realiti2D::CreateApplication();
+
+// #include "Renderer/Renderer.h"
 
 int main(int argc, char** argv) {
 	Realiti2D::Log::Initialize();
 	CORE_INFO("[ENTRY POINT] Initialized log");
-	Renderer* renderer = new Renderer();
-	
-	if (renderer->Initialize(1024.0f, 768.0f)) {
-		CORE_INFO("[ENTRY POINT] Initialized renderer");
-	}
-	else {
-		CORE_ERROR("[ENTRY POINT] Unable to initialize renderer");
-		return 1;
+	Realiti2D::Application* app = Realiti2D::CreateApplication();
+
+	if (app->s_bIsInitialized) {
+		app->Run();
+	} else {
+		CORE_ERROR("[ENTRY POINT] Error initializing Application!");
 	}
 
-	RunApplication();
-
-	renderer->Shutdown();
+	delete app;
 	return 0;
 }
