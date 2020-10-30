@@ -15,8 +15,8 @@ IncludeDir = {}
 IncludeDir["SDL2"] = "%{prj.name}/thirdparty/SDL2-2.0.12/include"
 IncludeDir["GLEW"] = "%{prj.name}/thirdparty/glew-2.1.0/include"
 LibDir = {}
-LibDir["SDL2"] = "%{prj.name}/thirdparty/SDL2-2.0.12/lib/x64"
-LibDir["GLEW"] = "%{prj.name}/thirdparty/glew-2.1.0/lib/Release/x64"
+LibDir["SDL2"] = "Realiti2D/thirdparty/SDL2-2.0.12/lib/x64"
+LibDir["GLEW"] = "Realiti2D/thirdparty/glew-2.1.0/lib/Release/x64"
 
 project "Realiti2D"
     location "Realiti2D"
@@ -94,13 +94,18 @@ project "Sandbox"
 	{
 		"Realiti2D/src",
 		"Realiti2D/thirdparty/spdlog/include",
-		"%{IncludeDir.SDL2}",
-		"%{IncludeDir.GLEW}"
+		"Realiti2D/thirdparty/SDL2-2.0.12/include",
+		"Realiti2D/thirdparty/thirdparty/glew-2.1.0/include",
 	}
 
 	links 
 	{
 		"Realiti2D"
+	}
+
+	postbuildcommands
+	{
+		
 	}
 
 	filter "system:windows"
