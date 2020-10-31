@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Log.h"
+#include "Input/Input.h"
 #include "Renderer/Renderer.h"
 
 const unsigned int FPS = 60;
@@ -11,30 +12,31 @@ namespace Realiti2D {
 
 	Application::Application(const float& Width, const float& Height, const std::string& Title)
 		: m_Renderer(nullptr),
+		m_InputSystem(nullptr),
 		m_bIsRunning(false),
 		m_TicksLastFrame(0.0f) {
-		CORE_INFO("[APPLICATION] Initializing Application");
-		m_Renderer = new Renderer();
-		
-		bool Result = m_Renderer->Initialize(Width, Height, Title);
+		CORE_INFO("[application] initializing application");
 
-		if (!Result) {
-			CORE_ERROR("[ENTRY POINT] Unable to initialize Renderer!");
-			return;
-		}
+		ASSERT(!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER), "[application] unable to initialize sdl");
+
+		m_Renderer = new Renderer();
+		ASSERT(m_Renderer->Initialize(Width, Height, Title), "[application] unable to initialize renderer");
+
+		m_InputSystem = new InputSystem();
+		ASSERT(m_InputSystem->Initialize(), "[application] unable to initialize input system");
 
 		s_bIsInitialized = true;
 		m_bIsRunning = true;
 	}
 
 	Application::~Application() {
-		CORE_INFO("[APPLICATION] Shutting down application");
+		CORE_INFO("[application] shutting down application");
 		m_Renderer->Shutdown();
 		delete m_Renderer;
 	}
 
 	void Application::Run() {
-		CORE_INFO("[APPLICATION] Running app");
+		CORE_INFO("[application] running app");
 		// Start?
 
 		while (m_bIsRunning) {
@@ -59,6 +61,8 @@ namespace Realiti2D {
 	void Application::Start() { }
 
 	void Application::ProcessInput() {
+		m_InputSystem->PrepareForUpdate();
+
 		SDL_Event FrameEvent;
 		while (SDL_PollEvent(&FrameEvent)) {
 			switch (FrameEvent.type) {
@@ -69,6 +73,15 @@ namespace Realiti2D {
 				break;
 			}
 		}
+
+		m_InputSystem->Update();
+
+		if (m_InputSystem->GetState().Keyboard.WasKeyPressedThisFrame(KEYCODE_ESCAPE)) {
+			m_bIsRunning = false;
+		}
+
+		// TODO: Update all actors?
+		// I'm still not sure if I will have a dedicated input function for actors, maybe just do this on the update?
 	}
 
 	void Application::Update(float DeltaTime) {

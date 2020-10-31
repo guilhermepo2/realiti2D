@@ -21,3 +21,5 @@ namespace Realiti2D {
 #define DEBUG_INFO(...)			::Realiti2D::Log::GetAppLogger()->info		(  __VA_ARGS__ );
 #define DEBUG_WARNING(...)		::Realiti2D::Log::GetAppLogger()->warn		(  __VA_ARGS__ );
 #define DEBUG_ERROR(...)		::Realiti2D::Log::GetAppLogger()->error		(  __VA_ARGS__ );
+
+#define ASSERT(x, ...) { if(!(x)) { CORE_ERROR( __VA_ARGS__ ); __debugbreak(); } }

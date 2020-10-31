@@ -9,13 +9,13 @@ extern Realiti2D::Application* Realiti2D::CreateApplication();
 
 int main(int argc, char** argv) {
 	Realiti2D::Log::Initialize();
-	CORE_INFO("[ENTRY POINT] Initialized log");
+	CORE_INFO("[entry point] log initialized");
 	Realiti2D::Application* app = Realiti2D::CreateApplication();
 
 	if (app->s_bIsInitialized) {
 		app->Run();
 	} else {
-		CORE_ERROR("[ENTRY POINT] Error initializing Application!");
+		CORE_ERROR("[entry point] error initializing application");
 	}
 
 	delete app;

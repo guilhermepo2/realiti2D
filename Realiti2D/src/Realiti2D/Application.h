@@ -4,6 +4,7 @@
 namespace Realiti2D {
 
 	class Renderer;
+	class InputSystem;
 
 	class Application {
 	public:
@@ -23,7 +24,9 @@ namespace Realiti2D {
 	private:
 		bool m_bIsRunning;
 		float m_TicksLastFrame;
+
 		Renderer* m_Renderer;
+		InputSystem* m_InputSystem;
 	};
 
 	// Defined in the client...
