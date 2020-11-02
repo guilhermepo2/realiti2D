@@ -66,7 +66,25 @@ namespace Realiti2D {
 	class ControllerState {
 	public:
 		friend class InputSystem;
+		bool GetButtonValue(SDL_GameControllerButton Button) const;
+		EButtonState GetButtonState(SDL_GameControllerButton Button) const;
+
+		bool GetIscConnected()		const { return m_IsConnected;	}
+		float GetLeftTrigger()		const { return m_LeftTrigger;	}
+		float GetRightTrigger()		const { return m_RightTrigger;	}
+		Vector2 GetLeftStick()		const { return m_LeftStick;		}
+		Vector2 GetRightStick()		const { return m_RightStick;	}
+
 	private:
+		Uint8 m_CurrentButtons[SDL_CONTROLLER_BUTTON_MAX];
+		Uint8 m_PreviousButtons[SDL_CONTROLLER_BUTTON_MAX];
+		bool m_IsConnected;
+
+		float m_LeftTrigger;
+		float m_RightTrigger;
+
+		Vector2 m_LeftStick;
+		Vector2 m_RightStick;
 	};
 
 	// -------------------------------------------
@@ -75,7 +93,7 @@ namespace Realiti2D {
 	struct InputState {
 		KeyboardState	Keyboard;
 		MouseState		Mouse;
-		// ControllerState Controller;
+		ControllerState Controller;
 	};
 
 	// -------------------------------------------
@@ -93,10 +111,9 @@ namespace Realiti2D {
 		const InputState& GetState() const { return m_State; }
 
 	private:
-		// float Filter1D(int Input);
-		// Vector2 Filter2D(int InputX, int InputY);
+		float Filter1D(int Input);
+		Vector2 Filter2D(int InputX, int InputY);
 		InputState m_State;
 		SDL_GameController* m_Controller;
-
 	};
 }
