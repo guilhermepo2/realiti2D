@@ -4,6 +4,11 @@ class Sandbox : public Realiti2D::Application {
 public:
 	Sandbox(const float& Width, const float& Height, const std::string& Title) : Application(Width, Height, Title) {}
 	~Sandbox() {}
+
+	void Start() override {
+		DEBUG_INFO("starting app");
+	}
+
 private:
 
 };

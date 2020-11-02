@@ -37,7 +37,7 @@ namespace Realiti2D {
 
 	void Application::Run() {
 		CORE_INFO("[application] running app");
-		// Start?
+		Start();
 
 		while (m_bIsRunning) {
 			// -------------------------------------------
@@ -70,6 +70,7 @@ namespace Realiti2D {
 				m_bIsRunning = false;
 				break;
 			default:
+				m_InputSystem->ProcessEvent(FrameEvent);
 				break;
 			}
 		}

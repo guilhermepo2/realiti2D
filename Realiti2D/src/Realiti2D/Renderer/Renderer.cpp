@@ -33,7 +33,7 @@ namespace Realiti2D {
 		);
 
 		if (!m_Window) {
-			CORE_ERROR("Unable to create window: %s", SDL_GetError());
+			CORE_ERROR("[renderer] unable to create window: %s", SDL_GetError());
 			return false;
 		}
 
@@ -41,12 +41,12 @@ namespace Realiti2D {
 		m_GLContext = SDL_GL_CreateContext(m_Window);
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK) {
-			CORE_ERROR("Unable to initialize GLEW.");
+			CORE_ERROR("[renderer] unable to initialize glew.");
 			return false;
 		}
 		glGetError(); // on some platformrs GLEW will emit a benign error code, clean it.
 
-		CORE_INFO("[RENDERER] Renderer Initialized");
+		CORE_INFO("[renderer] renderer initialized");
 		return true;
 
 	}
@@ -58,7 +58,7 @@ namespace Realiti2D {
 	}
 
 	void Renderer::Shutdown() {
-		CORE_INFO("[RENDERER] Shutting Down renderer");
+		CORE_INFO("[renderer] shutting down renderer");
 		SDL_GL_DeleteContext(m_GLContext);
 		SDL_DestroyWindow(m_Window);
 	}

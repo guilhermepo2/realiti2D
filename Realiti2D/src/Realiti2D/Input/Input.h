@@ -2,9 +2,11 @@
 #include <SDL_scancode.h>
 #include <SDL_gamecontroller.h>
 #include <SDL_mouse.h>
+#include <vector>
 
 #include "KeyboardInput.h"
 #include "MouseInput.h"
+#include "Realiti2D/Math/Math.h"
 
 union SDL_Event;
 
@@ -40,8 +42,21 @@ namespace Realiti2D {
 	class MouseState {
 	public:
 		friend class InputSystem;
-		
+		const Vector2& GetPosition() const { return m_MousePosition; }
+
+		bool GetButtonValue(R2D_Mousecode MouseKey) const;
+		EButtonState GetButtonState(R2D_Mousecode MouseKey) const;
+
+		bool IsMouseKeyDown					(R2D_Mousecode MouseKey) const;
+		bool WasMouseKeyPressedThisFrame	(R2D_Mousecode MouseKey) const;
+		bool WasKMouseKeyReleasedThisFrame	(R2D_Mousecode MouseKey) const;
+
+
 	private:
+		Vector2 m_MousePosition;
+		Vector2 m_ScrollWheel;
+		Uint32 m_MouseButtons;
+		Uint32 m_MouseButtonsLastFrame;
 		bool m_IsRelative;
 	};
 
