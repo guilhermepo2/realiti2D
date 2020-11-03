@@ -1,8 +1,14 @@
 #pragma once
 #include <SDL.h>
 #include <string>
+#include <unordered_map>
 
 namespace Realiti2D {
+
+	class Texture;
+	class Shader;
+	class VertexArray;
+
 	class Renderer {
 	public:
 		Renderer();
@@ -21,6 +27,11 @@ namespace Realiti2D {
 		float m_ScreenWidth;
 		float m_ScreenHeight;
 		std::string m_WindowTitle;
+
+		// Loaded Textures
+		std::unordered_map<std::string, Texture*> m_Textures;
+		Shader* m_DefaultSpriteShader;
+		VertexArray* m_DefaultSpriteVertexArray;
 
 		SDL_Window* m_Window;
 		SDL_GLContext m_GLContext;

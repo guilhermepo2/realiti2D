@@ -14,6 +14,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["SDL2"] = "%{prj.name}/thirdparty/SDL2-2.0.12/include"
 IncludeDir["GLEW"] = "%{prj.name}/thirdparty/glew-2.1.0/include"
+IncludeDir["SOIL"] = "%{prj.name}/thirdparty/soil-0.0.3/include"
 LibDir = {}
 LibDir["SDL2"] = "Realiti2D/thirdparty/SDL2-2.0.12/lib/x64"
 LibDir["GLEW"] = "Realiti2D/thirdparty/glew-2.1.0/lib/Release/x64"
@@ -38,7 +39,8 @@ project "Realiti2D"
         "%{prj.name}/src",
 		"%{prj.name}/thirdparty/spdlog/include",
 		"%{IncludeDir.SDL2}",
-		"%{IncludeDir.GLEW}"
+		"%{IncludeDir.GLEW}",
+		"%{IncludeDir.SOIL}",
 	}
 	
 	libdirs
@@ -96,6 +98,7 @@ project "Sandbox"
 		"Realiti2D/thirdparty/spdlog/include",
 		"Realiti2D/thirdparty/SDL2-2.0.12/include",
 		"Realiti2D/thirdparty/thirdparty/glew-2.1.0/include",
+		"Realiti2D/thirdparty/thirdparty/soil-0.0.3/include",
 	}
 
 	links 

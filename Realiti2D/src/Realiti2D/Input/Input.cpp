@@ -1,5 +1,6 @@
 #include "Input.h"
 #include "Realiti2D/Log.h"
+#include "Realiti2D/Math/Math.h"
 #include <SDL.h>
 #include <cstring>
 
@@ -161,8 +162,7 @@ namespace Realiti2D {
 			retVal = Input > 0 ? retVal : (-1.0f * retVal);
 
 			// Clamp between -1.0f and 1.0f
-			retVal = ((retVal < -1.0f) ? -1.0f : retVal);
-			retVal = ((retVal > 1.0f) ? 1.0f : retVal);
+			Math::Clamp(retVal, -1.0f, 1.0f);
 		}
 
 		return retVal;
@@ -188,8 +188,7 @@ namespace Realiti2D {
 			float f = (length - deadZone) / (maxValue - deadZone);
 
 			// Clamp f between 0.0f and 1.0f
-			f = ((f < -1.0f) ? -1.0f : f);
-			f = ((f > 1.0f) ? 1.0f : f);
+			Math::Clamp(f, -1.0f, 1.0f);
 
 			// Normalize the vector, and then scale it to the fractional value
 			dir *= f / length;
