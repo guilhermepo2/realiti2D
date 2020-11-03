@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector2.h"
+#include "Matrix4.h"
 
 namespace Realiti2D::Math {
 	template<typename T>
