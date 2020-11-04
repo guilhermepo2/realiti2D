@@ -18,6 +18,9 @@ namespace Realiti2D {
 		void Draw();
 		void Shutdown();
 
+		void LoadTexture(const std::string& filePath);
+		Texture* GetTexture(const std::string& fileName);
+
 		inline float GetScreenWidth() const { return m_ScreenWidth; }
 		inline float GetScreenHeight() const { return m_ScreenHeight; }
 		inline std::string GetWindowTitle() const { return m_WindowTitle; }

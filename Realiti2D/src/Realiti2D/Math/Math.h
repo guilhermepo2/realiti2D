@@ -2,6 +2,7 @@
 
 #include "Vector2.h"
 #include "Matrix4.h"
+#include "Quaternion.h"
 
 namespace Realiti2D::Math {
 	template<typename T>

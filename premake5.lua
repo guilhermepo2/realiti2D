@@ -97,8 +97,8 @@ project "Sandbox"
 		"Realiti2D/src",
 		"Realiti2D/thirdparty/spdlog/include",
 		"Realiti2D/thirdparty/SDL2-2.0.12/include",
-		"Realiti2D/thirdparty/thirdparty/glew-2.1.0/include",
-		"Realiti2D/thirdparty/thirdparty/soil-0.0.3/include",
+		"Realiti2D/thirdparty/glew-2.1.0/include",
+		"Realiti2D/thirdparty/soil-0.0.3/include",
 	}
 
 	links 
