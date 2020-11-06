@@ -7,6 +7,7 @@ public:
 
 	void Start() override {
 		DEBUG_INFO("starting app");
+		Realiti2D::Entity& MyEntity = AddEntity("MyEntity");
 	}
 
 private:

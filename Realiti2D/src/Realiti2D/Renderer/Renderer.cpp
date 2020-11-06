@@ -48,31 +48,44 @@ namespace Realiti2D {
 			return false;
 		}
 		glGetError(); // on some platformrs GLEW will emit a benign error code, clean it.
-
-		//
-		// TEMP - HAVE A SPECIAL FUNCTIONS FOR THESE THIGNS!!
-		//
-		// loading shaders
-		m_DefaultSpriteShader = new Shader();
 		
+		if (!LoadDefaultShaders()) {
+			CORE_ERROR("[renderer] failed to load default shaders");
+			return false;
+		}
+		
+		CreateDefaultSpriteVertex();
+		
+		CORE_INFO("[renderer] renderer initialized");
+		return true;
+
+	}
+
+	bool Renderer::LoadDefaultShaders() {
+		m_DefaultSpriteShader = new Shader();
+
 		// lol this is awful. help.
-		if (!m_DefaultSpriteShader->Load(
-			"E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Shaders\\Sprite.vert", 
-			"E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Shaders\\Sprite.frag")) {
+		if (!m_DefaultSpriteShader->Load
+			(
+				"E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Shaders\\Sprite.vert",
+				"E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Shaders\\Sprite.frag")
+			) 
+		{
 			return false;
 		}
 
 		m_DefaultSpriteShader->SetActive();
 		Matrix4 ViewProj = Matrix4::CreateSimpleViewProj(m_ScreenWidth, m_ScreenHeight);
 		m_DefaultSpriteShader->SetMatrixUniform("uViewProj", ViewProj);
-		// End of loading shaders
+		return true;
+	}
 
-		// Creating sprite vertices....
+	void Renderer::CreateDefaultSpriteVertex(){
 		float vertices[] = {
 			-0.5f,  0.5f, 0.0f, 0.0f, 0.0f,		// top left
 			0.5f,  0.5f, 0.0f, 1.0f, 0.0f,		// top right
 			0.5f, -0.5f, 0.0f, 1.0f, 1.0f,		// bottom right
-		-	0.5f, -0.5f, 0.0f, 0.0f, 1.0f,		// bottom left
+			-0.5f, -0.5f, 0.0f, 0.0f, 1.0f,		// bottom left
 		};
 
 		unsigned int indices[] = {
@@ -81,10 +94,6 @@ namespace Realiti2D {
 		};
 
 		m_DefaultSpriteVertexArray = new VertexArray(vertices, 4, indices, 6);
-
-		CORE_INFO("[renderer] renderer initialized");
-		return true;
-
 	}
 
 	void Renderer::Draw() {
@@ -95,13 +104,14 @@ namespace Realiti2D {
 		glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
-		// Have an active shader and sprite vertex array pointer?
+		// TODO: Have an active shader and sprite vertex array pointer?
 		m_DefaultSpriteShader->SetActive();
 		m_DefaultSpriteVertexArray->SetActive();
-		// Draw Something... ?
 
+		//
 		Texture* myTexture = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Sprites\\kenney_spaceship.png");
 		if (myTexture) {
+			
 			// Creating scale matrix
 			Matrix4 ScaleMat = Matrix4::CreateScale(
 				static_cast<float>(myTexture->GetWidth()),
@@ -109,6 +119,7 @@ namespace Realiti2D {
 				1.0f
 			);
 
+			// Actor specific stuff starts here
 			// Calculating World Transform...
 			Matrix4 WorldTransform = Matrix4::CreateScale(1.0f, 1.0f, 1.0f);
 			WorldTransform *= Matrix4::CreateFromQuaternion(Quaternion::Identity);
@@ -118,7 +129,10 @@ namespace Realiti2D {
 
 			myTexture->SetActive();
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			// end of actor specific stuff...
+
 		}
+		//
 
 		SDL_GL_SwapWindow(m_Window);
 	}

@@ -1,8 +1,12 @@
 #pragma once
 #include <string>
 
+#include "Realiti2D/Entity/Entity.h"
+#include "Realiti2D/Entity/EntityManager.h"
+
 namespace Realiti2D {
 
+	class EntityManager;
 	class Renderer;
 	class InputSystem;
 
@@ -15,6 +19,8 @@ namespace Realiti2D {
 
 		static bool s_bIsInitialized;
 
+		Entity& AddEntity(std::string InName) { return m_EntityManager->AddEntity(InName); };
+
 	protected:
 		virtual void Start();
 		void ProcessInput();
@@ -25,6 +31,7 @@ namespace Realiti2D {
 		bool m_bIsRunning;
 		float m_TicksLastFrame;
 
+		EntityManager* m_EntityManager;
 		Renderer* m_Renderer;
 		InputSystem* m_InputSystem;
 	};

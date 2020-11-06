@@ -2,6 +2,7 @@
 #include "Log.h"
 #include "Input/Input.h"
 #include "Renderer/Renderer.h"
+#include "Entity/EntityManager.h"
 
 
 const unsigned int FPS = 60;
@@ -26,6 +27,8 @@ namespace Realiti2D {
 		m_InputSystem = new InputSystem();
 		ASSERT(m_InputSystem->Initialize(), "[application] unable to initialize input system");
 
+		m_EntityManager = new EntityManager();
+
 		s_bIsInitialized = true;
 		m_bIsRunning = true;
 	}
@@ -38,7 +41,9 @@ namespace Realiti2D {
 
 	void Application::Run() {
 		CORE_INFO("[application] running app");
+
 		Start();
+		m_EntityManager->BeginPlay();
 
 		while (m_bIsRunning) {
 			// -------------------------------------------
@@ -87,10 +92,12 @@ namespace Realiti2D {
 	}
 
 	void Application::Update(float DeltaTime) {
+		m_EntityManager->Update(DeltaTime);
 		return;
 	}
 
 	void Application::Render() {
+		m_EntityManager->Render();
 		m_Renderer->Draw();
 		return;
 	}

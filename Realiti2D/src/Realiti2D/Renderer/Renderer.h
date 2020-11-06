@@ -27,6 +27,9 @@ namespace Realiti2D {
 		inline SDL_Window* GetWindow() { return m_Window; }
 		inline SDL_GLContext& GetContext() { return m_GLContext; }
 	private:
+		bool LoadDefaultShaders();
+		void CreateDefaultSpriteVertex();
+
 		float m_ScreenWidth;
 		float m_ScreenHeight;
 		std::string m_WindowTitle;
