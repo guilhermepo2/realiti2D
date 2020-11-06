@@ -5,6 +5,8 @@
 #include "Realiti2D/Log.h"
 #include <GL/glew.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 namespace Realiti2D {
 	// we don't do anything on constructor or destructor because we want to
 	// explicitly tell the modules when to do those kind of things
@@ -111,8 +113,7 @@ namespace Realiti2D {
 		//
 		Texture* myTexture = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Sprites\\kenney_spaceship.png");
 		if (myTexture) {
-			
-			// Creating scale matrix
+
 			Matrix4 ScaleMat = Matrix4::CreateScale(
 				static_cast<float>(myTexture->GetWidth()),
 				static_cast<float>(myTexture->GetHeight()),

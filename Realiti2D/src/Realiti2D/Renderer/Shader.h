@@ -14,6 +14,7 @@ namespace Realiti2D {
 		void SetActive();
 		void SetMatrixUniform(const char* Name, const Matrix4& Matrix);
 
+		GLuint GetShaderProgram() const { return m_ShaderProgram; }
 	private:
 		bool CompileShader(const std::string& FileName, GLenum ShaderType, GLuint& OutShader);
 		bool IsCompiled(GLuint Shader);
