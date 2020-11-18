@@ -28,7 +28,7 @@ namespace Realiti2D {
 			Transform* t = GetComponentOfType<Transform>();
 			Sprite* s = GetComponentOfType<Sprite>();
 
-			Renderer::s_Instance->AddToRenderQueue(s->tex, &(t->Position), &(t->Rotation), &(t->Scale));
+			Renderer::s_Instance->AddToRenderQueue(s->tex, &(t->Position), t->Rotation, &(t->Scale));
 		}
 
 		// CORE_INFO("[entity] render...");
