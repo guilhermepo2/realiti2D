@@ -2,14 +2,14 @@
 
 namespace Realiti2D {
 
-	class Vector3;
+	class Vector2;
 	class Quaternion;
 	class Texture;
 
 	struct SpriteRenderData {
 		Texture* Texture;
-		Vector3* Position;
+		Vector2* Position;
 		Quaternion* Rotation;
-		Vector3* Scale;
+		Vector2* Scale;
 	};
 }

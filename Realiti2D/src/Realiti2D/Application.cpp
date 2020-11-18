@@ -97,6 +97,7 @@ namespace Realiti2D {
 	}
 
 	void Application::Render() {
+
 		m_EntityManager->Render();
 		m_Renderer->Draw();
 		return;

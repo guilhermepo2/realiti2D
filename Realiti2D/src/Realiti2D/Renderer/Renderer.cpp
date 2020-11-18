@@ -2,18 +2,37 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexArray.h"
+#include "SpriteRenderData.h"
 #include "Realiti2D/Log.h"
 #include <GL/glew.h>
 
-#include <glm/gtc/matrix_transform.hpp>
-
 namespace Realiti2D {
+	Renderer* Renderer::s_Instance = nullptr;
+
 	// we don't do anything on constructor or destructor because we want to
 	// explicitly tell the modules when to do those kind of things
 	Renderer::Renderer() {}
 	Renderer::~Renderer() {}
 
+	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, Quaternion* Rot, Vector2* Scale) {
+		SpriteRenderData rd = {
+			Tex,
+			Pos,
+			Rot,
+			Scale
+		};
+
+		m_SpriteRenderDataQueue.push_back(rd);
+	}
+
 	bool Renderer::Initialize(float ScreenWidth, float ScreenHeight, std::string WindowTitle) {
+		if (s_Instance != nullptr) {
+			CORE_ERROR("[renderer] are you trying to initialize the renderer twice?");
+			return false;
+		}
+
+		s_Instance = this;
+
 		m_ScreenWidth = ScreenWidth;
 		m_ScreenHeight = ScreenHeight;
 		m_WindowTitle = WindowTitle;
@@ -110,30 +129,28 @@ namespace Realiti2D {
 		m_DefaultSpriteShader->SetActive();
 		m_DefaultSpriteVertexArray->SetActive();
 
-		//
-		Texture* myTexture = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Sprites\\kenney_spaceship.png");
-		if (myTexture) {
+		while (!m_SpriteRenderDataQueue.empty()) {
+			SpriteRenderData RenderData = m_SpriteRenderDataQueue[0];
+			m_SpriteRenderDataQueue.erase(m_SpriteRenderDataQueue.begin());
 
-			Matrix4 ScaleMat = Matrix4::CreateScale(
-				static_cast<float>(myTexture->GetWidth()),
-				static_cast<float>(myTexture->GetHeight()),
-				1.0f
-			);
+			if (RenderData.Texture) {
 
-			// Actor specific stuff starts here
-			// Calculating World Transform...
-			Matrix4 WorldTransform = Matrix4::CreateScale(1.0f, 1.0f, 1.0f);
-			WorldTransform *= Matrix4::CreateFromQuaternion(Quaternion::Identity);
-			WorldTransform *= Matrix4::CreateTranslation(0.0f, 0.0f, 0.0f);
-			Matrix4 World = ScaleMat * WorldTransform;
-			m_DefaultSpriteShader->SetMatrixUniform("uWorldTransform", World);
+				Matrix4 ScaleMat = Matrix4::CreateScale(
+					static_cast<float>(RenderData.Texture->GetWidth()),
+					static_cast<float>(RenderData.Texture->GetHeight()),
+					1.0f
+				);
 
-			myTexture->SetActive();
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-			// end of actor specific stuff...
+				Matrix4 WorldTransform = Matrix4::CreateScale(RenderData.Scale->x, RenderData.Scale->y, 1.0f);
+				WorldTransform *= Matrix4::CreateFromQuaternion(*RenderData.Rotation);
+				WorldTransform *= Matrix4::CreateTranslation(RenderData.Position->x, RenderData.Position->y, 0.0f);
+				Matrix4 World = ScaleMat * WorldTransform;
+				m_DefaultSpriteShader->SetMatrixUniform("uWorldTransform", World);
 
+				RenderData.Texture->SetActive();
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			}
 		}
-		//
 
 		SDL_GL_SwapWindow(m_Window);
 	}
