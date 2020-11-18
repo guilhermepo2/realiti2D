@@ -13,13 +13,16 @@ public:
 		MyEntity.AddComponent<Realiti2D::Sprite>("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Sprites\\kenney_spaceship.png");
 
 		Realiti2D::Entity& MyEntity2 = AddEntity("MyEntity2");
-		MyEntity2.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(2.0f, 0.0f), Realiti2D::Quaternion(), Realiti2D::Vector2(1.0f, 1.0f));
+		MyEntity2.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(350, 100.0f), Realiti2D::Quaternion(), Realiti2D::Vector2(2.0f, 1.0f));
 		MyEntity2.AddComponent<Realiti2D::Sprite>("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Sprites\\kenney_spaceship.png");
 
 		Realiti2D::Entity& MyEntity3 = AddEntity("MyEntity3");
-		MyEntity3.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(-2.0f, 0.0f), Realiti2D::Quaternion(), Realiti2D::Vector2(1.0f, 1.0f));
+		MyEntity3.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(-125.0f, 100.0f), Realiti2D::Quaternion(), Realiti2D::Vector2(1.0f, 2.0f));
 		MyEntity3.AddComponent<Realiti2D::Sprite>("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Sprites\\kenney_spaceship.png");
 
+		Realiti2D::Entity& MyEntity4 = AddEntity("MyEntity4");
+		MyEntity4.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(-150.0f, -150.0f), Realiti2D::Quaternion(), Realiti2D::Vector2(2.0f, 2.0f));
+		MyEntity4.AddComponent<Realiti2D::Sprite>("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Sprites\\kenney_spaceship.png");
 	}
 
 private:

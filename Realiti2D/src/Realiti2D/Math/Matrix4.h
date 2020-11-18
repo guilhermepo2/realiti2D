@@ -2,6 +2,10 @@
 #include <memory.h>
 #include <glm/glm.hpp>
 #include "glm/gtc/quaternion.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/transform.hpp"
+
+#include "Realiti2D/Log.h"
 
 namespace Realiti2D {
 
@@ -18,29 +22,9 @@ namespace Realiti2D {
 		const float* GetAsFloatPointer() const { return reinterpret_cast<const float*>(&M[0][0]); }
 
 	public:
-		
-		static Matrix4 CreateSimpleViewProj(float Width, float Height) {
-			glm::mat4 T =
-			{
-				{ 2.0f / Width, 0.0f,			0.0f, 0.0f },
-				{ 0.0f,			2.0f / Height,	0.0f, 0.0f },
-				{ 0.0f,			0.0f,			1.0f, 0.0f },
-				{ 0.0f,			0.0f,			1.0f, 1.0f }
-			};
-
-			return Matrix4(T);
-		}
-
 		static Matrix4 CreateScale(float xScale, float yScale, float zScale)
 		{
-			glm::mat4 T =
-			{
-				{ xScale, 0.0f, 0.0f, 0.0f },
-				{ 0.0f, yScale, 0.0f, 0.0f },
-				{ 0.0f, 0.0f, zScale, 0.0f },
-				{ 0.0f, 0.0f, 0.0f, 1.0f }
-			};
-
+			glm::mat4 T = glm::scale(glm::vec3(xScale, yScale, zScale));
 			return Matrix4(T);
 		}
 
@@ -49,13 +33,7 @@ namespace Realiti2D {
 
 		static Matrix4 CreateTranslation(float x, float y, float z)
 		{
-			glm::mat4 T =
-			{
-				{ 1.0f, 0.0f, 0.0f, 0.0f },
-				{ 0.0f, 1.0f, 0.0f, 0.0f },
-				{ 0.0f, 0.0f, 1.0f, 0.0f },
-				{ x, y, z, 1.0f }
-			};
+			glm::mat4 T = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
 			return Matrix4(T);
 		}
 

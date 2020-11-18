@@ -96,8 +96,6 @@ namespace Realiti2D {
 		}
 
 		m_DefaultSpriteShader->SetActive();
-		Matrix4 ViewProj = Matrix4::CreateSimpleViewProj(m_ScreenWidth, m_ScreenHeight);
-		m_DefaultSpriteShader->SetMatrixUniform("uViewProj", ViewProj);
 		return true;
 	}
 
@@ -129,6 +127,30 @@ namespace Realiti2D {
 		m_DefaultSpriteShader->SetActive();
 		m_DefaultSpriteVertexArray->SetActive();
 
+		// Camera
+		glm::mat4 CameraProjection = glm::ortho(-512.0f, 512.0f, -368.0f, 368.0f, -10.0f, 10.0f);
+		glm::mat4 CameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
+		glm::mat4 CameraView = glm::inverse(CameraTransform);
+		glm::mat4 CameraViewProj = CameraProjection * CameraView;
+		Matrix4 ViewProj(CameraViewProj);
+		m_DefaultSpriteShader->SetMatrixUniform("uViewProj", ViewProj);
+
+		/*
+		Texture* tex = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Sprites\\kenney_spaceship.png");
+		if (tex) {
+			glm::mat4 Scale = glm::scale(glm::vec3(106.0f, 80.0f, 1.0f));
+			glm::mat4 ActorScale = glm::scale(glm::vec3(1.0f, 1.0f, 1.0f));
+			glm::mat4 ActorTranslation = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 0.0f, 0.0f));
+
+
+			glm::mat4 World = (ActorTranslation * ActorScale) * Scale;
+			GLuint loc = glGetUniformLocation(m_DefaultSpriteShader->GetShaderProgram(), "uWorldTransform");
+			glUniformMatrix4fv(loc, 1, GL_FALSE, reinterpret_cast<const float*>(&World[0][0]));
+			tex->SetActive();
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		}
+		*/
+
 		while (!m_SpriteRenderDataQueue.empty()) {
 			SpriteRenderData RenderData = m_SpriteRenderDataQueue[0];
 			m_SpriteRenderDataQueue.erase(m_SpriteRenderDataQueue.begin());
@@ -141,10 +163,13 @@ namespace Realiti2D {
 					1.0f
 				);
 
-				Matrix4 WorldTransform = Matrix4::CreateScale(RenderData.Scale->x, RenderData.Scale->y, 1.0f);
-				WorldTransform *= Matrix4::CreateFromQuaternion(*RenderData.Rotation);
-				WorldTransform *= Matrix4::CreateTranslation(RenderData.Position->x, RenderData.Position->y, 0.0f);
-				Matrix4 World = ScaleMat * WorldTransform;
+				Matrix4 WorldScale = Matrix4::CreateScale(RenderData.Scale->x, RenderData.Scale->y, 1.0f);
+				Matrix4 WorldRotation = Matrix4::CreateFromQuaternion(*RenderData.Rotation);
+				glm::mat4 rotated = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+				Matrix4 WorldRotation2(rotated);
+				Matrix4 WorldTranslation = Matrix4::CreateTranslation(RenderData.Position->x, RenderData.Position->y, 0.0f);
+
+				Matrix4 World = (WorldTranslation * WorldRotation2 * WorldScale) * ScaleMat;
 				m_DefaultSpriteShader->SetMatrixUniform("uWorldTransform", World);
 
 				RenderData.Texture->SetActive();

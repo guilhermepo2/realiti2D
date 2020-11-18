@@ -51,7 +51,7 @@ namespace Realiti2D {
  				GLboolean transpose,
  				const GLfloat *value
 		); */
-		glUniformMatrix4fv(loc, 1, GL_TRUE, Matrix.GetAsFloatPointer());
+		glUniformMatrix4fv(loc, 1, GL_FALSE, Matrix.GetAsFloatPointer());
 	}
 	
 	// ------------------------------------------------
