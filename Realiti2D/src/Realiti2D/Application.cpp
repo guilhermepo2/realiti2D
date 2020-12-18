@@ -17,6 +17,7 @@ namespace Realiti2D {
 		m_InputSystem(nullptr),
 		m_bIsRunning(false),
 		m_TicksLastFrame(0.0f) {
+
 		CORE_INFO("[application] initializing application");
 
 		ASSERT(!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER), "[application] unable to initialize sdl");
@@ -35,8 +36,17 @@ namespace Realiti2D {
 
 	Application::~Application() {
 		CORE_INFO("[application] shutting down application");
+
 		m_Renderer->Shutdown();
 		delete m_Renderer;
+
+		m_InputSystem->Shutdown();
+		delete m_InputSystem;
+
+		m_EntityManager->Destroy(); // is Destroy() here the right function to call?
+		delete m_EntityManager;
+
+
 	}
 
 	void Application::Run() {

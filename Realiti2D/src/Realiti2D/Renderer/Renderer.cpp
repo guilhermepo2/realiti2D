@@ -129,8 +129,12 @@ namespace Realiti2D {
 
 		// Camera
 		// TODO: Have Ortographic Camera Class
-		glm::mat4 CameraProjection = glm::ortho(-512.0f, 512.0f, -368.0f, 368.0f, -10.0f, 10.0f);
-		glm::mat4 CameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
+		glm::mat4 CameraProjection = glm::ortho(
+			-(m_ScreenWidth / 2.0f), (m_ScreenWidth / 2.0f), 
+			-(m_ScreenHeight / 2.0f), (m_ScreenHeight / 2.0f), 
+			-10.0f, 10.0f
+		);
+		glm::mat4 CameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 10.0f));
 		glm::mat4 CameraView = glm::inverse(CameraTransform);
 		glm::mat4 CameraViewProj = CameraProjection * CameraView;
 		Matrix4 ViewProj(CameraViewProj);
@@ -149,7 +153,7 @@ namespace Realiti2D {
 				);
 
 				Matrix4 WorldScale = Matrix4::CreateScale(RenderData.Scale->x, RenderData.Scale->y, 1.0f);
-				Matrix4 WorldRotation = glm::rotate(glm::mat4(1.0f), glm::radians(RenderData.Rotation), glm::vec3(0.0f, 0.0f, -1.0f));
+				Matrix4 WorldRotation = Matrix4(glm::rotate(glm::mat4(1.0f), glm::radians(RenderData.Rotation), glm::vec3(0.0f, 0.0f, -1.0f)));
 				Matrix4 WorldTranslation = Matrix4::CreateTranslation(RenderData.Position->x, RenderData.Position->y, 0.0f);
 
 				Matrix4 World = (WorldTranslation * WorldRotation * WorldScale) * TextureScale;
