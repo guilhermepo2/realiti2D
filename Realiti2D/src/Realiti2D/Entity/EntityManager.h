@@ -4,10 +4,12 @@
 
 namespace Realiti2D {
 	class Entity;
+	struct InputState;
 
 	class EntityManager {
 	public:
 		void BeginPlay();
+		void ProcessInput(const InputState& CurrentInputState);
 		void Update(float DeltaTime);
 		void Render();
 		void Destroy();

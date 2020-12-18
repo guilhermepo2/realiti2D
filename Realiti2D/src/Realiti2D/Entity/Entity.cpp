@@ -15,6 +15,12 @@ namespace Realiti2D {
 		}
 	}
 
+	void Entity::ProcessInput(const InputState& CurrentInputState) {
+		for (Component* c : m_Components) {
+			c->ProcessInput(CurrentInputState);
+		}
+	}
+
 	void Entity::Update(float DeltaTime) {
 		// CORE_INFO("[entity] update...");
 		for (Component* c : m_Components) {

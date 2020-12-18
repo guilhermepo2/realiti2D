@@ -8,6 +8,12 @@ namespace Realiti2D {
 		}
 	}
 
+	void EntityManager::ProcessInput(const InputState& CurrentInputState) {
+		for (Entity* e : m_Entities) {
+			e->ProcessInput(CurrentInputState);
+		}
+	}
+
 	void EntityManager::Update(float DeltaTime) {
 		for (Entity* e : m_Entities) {
 			e->Update(DeltaTime);

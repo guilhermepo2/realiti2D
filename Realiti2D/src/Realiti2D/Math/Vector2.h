@@ -30,6 +30,13 @@ namespace Realiti2D {
 			return *this;
 		}
 
+		// Vector2 += Vector2
+		Vector2 operator+=(const Vector2& Other) {
+			x += Other.x;
+			y += Other.y;
+			return *this;
+		}
+
 	public:
 		static const Vector2 Zero;
 	};

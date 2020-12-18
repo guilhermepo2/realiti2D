@@ -99,6 +99,7 @@ namespace Realiti2D {
 
 		// TODO: Update all actors?
 		// I'm still not sure if I will have a dedicated input function for actors, maybe just do this on the update?
+		m_EntityManager->ProcessInput(m_InputSystem->GetState());
 	}
 
 	void Application::Update(float DeltaTime) {

@@ -6,6 +6,7 @@
 
 namespace Realiti2D {
 	class Component;
+	struct InputState;
 
 	class Entity {
 	public:
@@ -22,6 +23,7 @@ namespace Realiti2D {
 
 	public:
 		virtual void BeginPlay();
+		virtual void ProcessInput(const InputState& CurrentInputState);
 		virtual void Update(float DeltaTime);
 		virtual void Render();
 		virtual void Destroy();
