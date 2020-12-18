@@ -1,4 +1,6 @@
 #include <Realiti2D.h>
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
 class PlaneInput : public Realiti2D::Component {
 
@@ -54,7 +56,8 @@ public:
 		DEBUG_INFO("starting app");
 
 		Realiti2D::Entity& PlaneEntity = AddEntity("Plane");
-		PlaneEntity.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, 0.0f), 0.0f, Realiti2D::Vector2(1.0f, 1.0f));
+		float StartingXPosition = (-(SCREEN_WIDTH / 2)) + 175;
+		PlaneEntity.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(StartingXPosition, 0.0f), 0.0f, Realiti2D::Vector2(1.0f, 1.0f));
 		PlaneEntity.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/Planes/planeBlue1.png");
 		PlaneEntity.AddComponent<PlaneInput>();
 	}
