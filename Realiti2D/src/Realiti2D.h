@@ -10,6 +10,7 @@
 #include "Realiti2D/Component/Component.h"
 #include "Realiti2D/Component/TransformComponent.h"
 #include "Realiti2D/Component/Sprite.h"
+#include "Realiti2D/Component/AnimatedSprite.h"
 
 #include "Realiti2D/Renderer/Renderer.h"
 

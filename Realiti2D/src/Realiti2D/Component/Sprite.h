@@ -16,5 +16,11 @@ namespace Realiti2D {
 		Sprite(const std::string& TexturePath) {
 			tex = Renderer::s_Instance->GetTexture(TexturePath);
 		}
+
+		void SetTexture(Texture* _tex) {
+			if (_tex != nullptr) {
+				tex = _tex;
+			}
+		}
 	};
 }
