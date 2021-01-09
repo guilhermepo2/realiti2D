@@ -16,6 +16,7 @@ IncludeDir["SDL2"] = "%{prj.name}/thirdparty/SDL2-2.0.12/include"
 IncludeDir["GLEW"] = "%{prj.name}/thirdparty/glew-2.1.0/include"
 IncludeDir["SOIL"] = "%{prj.name}/thirdparty/soil-0.0.3/include"
 IncludeDir["GLM"] = "%{prj.name}/thirdparty/glm"
+IncludeDir["RAPIDJSON"] = "%{prj.name}/thirdparty/rapidjson-1.1.0/include"
 LibDir = {}
 LibDir["SDL2"] = "Realiti2D/thirdparty/SDL2-2.0.12/lib/x64"
 LibDir["GLEW"] = "Realiti2D/thirdparty/glew-2.1.0/lib/Release/x64"
@@ -43,6 +44,7 @@ project "Realiti2D"
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.SOIL}",
 		"%{IncludeDir.GLM}",
+		"%{IncludeDir.RAPIDJSON}",
 	}
 	
 	libdirs
@@ -102,6 +104,7 @@ project "Sandbox"
 		"Realiti2D/thirdparty/glew-2.1.0/include",
 		"Realiti2D/thirdparty/soil-0.0.3/include",
 		"Realiti2D/thirdparty/glm",
+		"Realiti2D/thirdparty/rapidson-1.1.0/include",
 	}
 
 	links 
