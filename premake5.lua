@@ -21,6 +21,22 @@ LibDir = {}
 LibDir["SDL2"] = "Realiti2D/thirdparty/SDL2-2.0.12/lib/x64"
 LibDir["GLEW"] = "Realiti2D/thirdparty/glew-2.1.0/lib/Release/x64"
 
+
+--- project "SOIL"
+--- 	location "Realiti2D/thirdparty/soil-0.0.3"
+--- 	kind "StaticLib"
+--- 	language "C"
+--- 	staticruntime "on"
+---
+--- 	targetdir("bin/".. outputdir .. "/%{prj.name}");
+--- 	objdir("bin-int/" .. outputdir .. "/%{prj.name}");
+---
+--- 	files
+--- 	{
+--- 		"Realiti2D/thirdparty/soil-0.0.3/include/SOIL/**.h",
+--- 		"Realiti2D/thirdparty/soil-0.0.3/src/**.c"
+--- 	}
+
 project "Realiti2D"
     location "Realiti2D"
     kind "StaticLib"
@@ -33,7 +49,12 @@ project "Realiti2D"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		
+		-- this is temporary (and bad), I should fix this.
+
+		"%{prj.name}/thirdparty/soil-0.0.3/include/SOIL/**.h",
+		"%{prj.name}/thirdparty/soil-0.0.3/src/**.c"
     }
 
     includedirs
@@ -57,7 +78,7 @@ project "Realiti2D"
     {
 		"SDL2.lib",
 		"glew32.lib",
-		"opengl32.lib"
+		"opengl32.lib",
     }
 
     filter "system:windows"
