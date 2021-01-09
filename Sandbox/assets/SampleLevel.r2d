@@ -1,0 +1,58 @@
+{
+	"version": 1,
+	"globalProperties": {
+
+	},
+	"entities": [
+		{
+			"name": "Plane",
+			"components": [
+				{
+					"type": "Transform",
+					"properties": {
+						"position": [
+							0,
+							0
+						],
+						"rotation": 0,
+						"scale": [
+							1,
+							1
+						]
+					}
+				},
+				{
+					"type": "Sprite",
+					"path": "assets/tappyplane/PNG/Planes/planeBlue1.png"
+				},
+				{
+					"type": "AnimatedSprite",
+					"properties": {
+						"animationFPS": "24",
+						"textures": [
+							"assets/tappyplane/PNG/Planes/planeBlue1.png",
+							"assets/tappyplane/PNG/Planes/planeBlue2.png",
+							"assets/tappyplane/PNG/Planes/planeBlue3.png"
+						]
+					}
+				},
+				{
+					"type": "PlaneInput"
+				}
+			]
+		},
+		{
+			"name": "Background",
+			"components": [
+				{
+					"type": "Transform",
+					"properties": {
+						"position": [ 0, 0 ],
+						"rotation": 0,
+						"scale": [ 1.75, 1.5 ]
+					}
+				}
+			]
+		}
+	]
+}
