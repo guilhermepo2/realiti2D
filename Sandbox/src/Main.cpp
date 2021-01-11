@@ -54,6 +54,7 @@ public:
 	void Start() override {
 
 		DEBUG_INFO("starting app");
+		// LevelLoader::LoadLevel("SampleLevel.r2d");
 
 		// Adding a background
 		Realiti2D::Entity& Background = AddEntity("Background");
