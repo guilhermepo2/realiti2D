@@ -75,6 +75,7 @@ public:
 		PlaneAnimation.AddAnimationTexture("assets/tappyplane/PNG/Planes/planeBlue3.png");
 		
 		PlaneEntity.AddComponent<PlaneInput>();
+		PlaneEntity.AddComponent<Realiti2D::BoxCollider>(Realiti2D::Vector2(-32.0f, -32.0f), Realiti2D::Vector2(32.0f, 32.0f));
 
 		// adding foreground
 		Realiti2D::Entity& Foreground = AddEntity("Foreground");

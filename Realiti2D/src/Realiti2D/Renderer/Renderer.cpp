@@ -25,6 +25,19 @@ namespace Realiti2D {
 		m_SpriteRenderDataQueue.push_back(rd);
 	}
 
+	void Renderer::AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale) {
+		Texture* tex = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
+		tex->SetWidth(Width);
+		tex->SetHeight(Height);
+
+		AddToRenderQueue(
+			tex,
+			Pos,
+			0,
+			Scale
+		);
+	}
+
 	bool Renderer::Initialize(float ScreenWidth, float ScreenHeight, std::string WindowTitle) {
 		if (s_Instance != nullptr) {
 			CORE_ERROR("[renderer] are you trying to initialize the renderer twice?");
@@ -78,6 +91,12 @@ namespace Realiti2D {
 		CreateDefaultSpriteVertex();
 		
 		CORE_INFO("[renderer] renderer initialized");
+		CORE_INFO("[renderer] initializing default textures...");
+		Texture* white = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
+		
+		if (white != nullptr) { CORE_INFO("[renderer] Loaded white texture"); } 
+		else { CORE_WARNING("[renderer] failed to load white texture!"); }
+		
 		return true;
 
 	}
@@ -116,6 +135,7 @@ namespace Realiti2D {
 	}
 
 	void Renderer::Draw() {
+		// TODO: Customize the clear color somehow! (camera background color maybe?!)
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		

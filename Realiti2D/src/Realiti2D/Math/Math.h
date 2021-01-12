@@ -22,4 +22,9 @@ namespace Realiti2D::Math {
 	T Clamp(const T& Value, const T& Lower, const T& Upper) {
 		return glm::clamp(Value, Lower, Upper);
 	}
+
+	template<typename T>
+	T Abs(const T& Value) {
+		return glm::abs(Value);
+	}
 }
