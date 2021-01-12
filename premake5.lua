@@ -32,7 +32,12 @@ project "Realiti2D"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		
+		-- this is temporary (and bad), I should fix this.
+
+		"%{prj.name}/thirdparty/soil-0.0.3/include/SOIL/**.h",
+		"%{prj.name}/thirdparty/soil-0.0.3/src/**.c"
     }
 
     includedirs
