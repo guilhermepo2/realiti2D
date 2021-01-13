@@ -3,6 +3,7 @@
 #include "Input/Input.h"
 #include "Renderer/Renderer.h"
 #include "Entity/EntityManager.h"
+#include "Collision/CollisionWorld.h"
 
 
 const unsigned int FPS = 60;
@@ -29,6 +30,9 @@ namespace Realiti2D {
 		ASSERT(m_InputSystem->Initialize(), "[application] unable to initialize input system");
 
 		m_EntityManager = new EntityManager();
+
+		m_CollisionWorld = new CollisionWorld();
+		ASSERT(m_CollisionWorld->Initialize(), "[application] unable to initialize collision world");
 
 		s_bIsInitialized = true;
 		m_bIsRunning = true;
