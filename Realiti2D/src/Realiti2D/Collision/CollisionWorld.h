@@ -16,10 +16,12 @@ namespace Realiti2D {
 		void Draw();
 		void Shutdown();
 
+		void VerifyAllCollisions();
 		void AddColliderToWorld(BoxCollider* Collider);
 		void RemoveColliderFromWorld(BoxCollider* Collider);
 
 	private:
 		std::vector<BoxCollider*> m_WorldColliders;
+		bool Overlaps(BoxCollider* a, BoxCollider* b);
 	};
 }

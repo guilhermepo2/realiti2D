@@ -108,6 +108,11 @@ namespace Realiti2D {
 
 	void Application::Update(float DeltaTime) {
 		m_EntityManager->Update(DeltaTime);
+
+		// TODO: Is this the best place for this? I guess so, checking all collisions is, in a sense, the "Update" for the Collision World
+		// Maybe I should just m_CollisionWorld->Update() ?
+		m_CollisionWorld->VerifyAllCollisions();
+
 		return;
 	}
 
