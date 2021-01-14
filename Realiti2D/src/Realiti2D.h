@@ -19,3 +19,4 @@
 #include "Realiti2D/Math/Math.h"
 
 #include "Realiti2D/Collision/Collider.h"
+#include "Realiti2D/Collision/CollisionWorld.h"

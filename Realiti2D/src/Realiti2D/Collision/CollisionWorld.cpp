@@ -2,6 +2,7 @@
 #include "CollisionWorld.h"
 #include "Collider.h"
 #include "Realiti2D/Component/BoxCollider.h"
+#include "Realiti2D/Renderer/Renderer.h"
 
 namespace Realiti2D {
 	CollisionWorld* CollisionWorld::s_Instance = nullptr;
@@ -49,9 +50,9 @@ namespace Realiti2D {
 				BoxCollider* b = m_WorldColliders[j];
 				
 				if (Overlaps(a, b)) {
-					CORE_INFO("{0} collided with {1}", a->Owner->Name, b->Owner->Name);
-					a->CollisionCallback();
-					b->CollisionCallback();
+					// CORE_INFO("{0} collided with {1}", a->Owner->Name, b->Owner->Name);
+					a->HandleCollisionCallback(b);
+					b->HandleCollisionCallback(a);
 				}
 
 			}

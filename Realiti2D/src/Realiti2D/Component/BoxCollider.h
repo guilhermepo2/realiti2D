@@ -5,7 +5,7 @@
 #include "Realiti2D/Collision/Collider.h"
 #include "Realiti2D/Collision/CollisionWorld.h"
 
-#include "Realiti2D/Renderer/Renderer.h"
+#define BIND_COLLISION(...) std::bind(__VA_ARGS__, this, std::placeholders::_1);
 
 namespace Realiti2D {
 	
@@ -29,16 +29,16 @@ namespace Realiti2D {
 		inline AABB* GetBoundingBox()  { return &m_AABB; }
 		inline Transform* GetTransform() { return m_TransformReference; }
 		
-		void CollisionCallback() {
-			if (m_CollisionCallback) {
-				m_CollisionCallback();
+		void HandleCollisionCallback(BoxCollider* Other) {
+			if (CollisionCallback) {
+				CollisionCallback(Other);
 			}
 		}
 
+		std::function<void(BoxCollider*)> CollisionCallback;
 	private:
 		AABB m_AABB;
 		Transform* m_TransformReference;
-		std::function<void()> m_CollisionCallback;
 	};
 
 }
