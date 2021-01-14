@@ -26,18 +26,6 @@ namespace Realiti2D {
 			m_TransformReference = Owner->GetComponentOfType<Transform>();
 		}
 
-		void Render() {
-			if (m_TransformReference != nullptr) {
-				// TODO: there can be a problem here in case min point is bigger than the max point
-				// which in this case, the min is the max, and this should never happen
-				// but... you know... stuff happens...
-				int Width = Math::Abs(m_AABB.MinPoint.x - m_AABB.MaxPoint.x);
-				int Height = Math::Abs(m_AABB.MinPoint.y - m_AABB.MaxPoint.y);
-
-				Renderer::s_Instance->AddQuadToRenderQueue(&(m_TransformReference->Position), Width, Height, &(m_TransformReference->Scale));
-			}
-		}
-
 		inline AABB* GetBoundingBox()  { return &m_AABB; }
 		inline Transform* GetTransform() { return m_TransformReference; }
 		

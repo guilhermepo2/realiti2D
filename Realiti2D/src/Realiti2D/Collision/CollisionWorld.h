@@ -13,7 +13,7 @@ namespace Realiti2D {
 		static CollisionWorld* s_Instance;
 
 		bool Initialize();
-		void Draw();
+		void Render();
 		void Shutdown();
 
 		void VerifyAllCollisions();

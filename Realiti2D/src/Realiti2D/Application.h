@@ -33,6 +33,7 @@ namespace Realiti2D {
 		Renderer* m_Renderer;
 		InputSystem* m_InputSystem;
 		CollisionWorld* m_CollisionWorld;
+		bool m_bShowDebugColliders;
 	};
 
 	// Defined in the client...

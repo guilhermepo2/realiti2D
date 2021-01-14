@@ -33,6 +33,7 @@ namespace Realiti2D {
 
 		m_CollisionWorld = new CollisionWorld();
 		ASSERT(m_CollisionWorld->Initialize(), "[application] unable to initialize collision world");
+		m_bShowDebugColliders = false;
 
 		s_bIsInitialized = true;
 		m_bIsRunning = true;
@@ -100,6 +101,9 @@ namespace Realiti2D {
 		if (m_InputSystem->GetState().Keyboard.WasKeyPressedThisFrame(KEYCODE_ESCAPE)) {
 			m_bIsRunning = false;
 		}
+		else if (m_InputSystem->GetState().Keyboard.WasKeyPressedThisFrame(KEYCODE_F1)) {
+			m_bShowDebugColliders = !m_bShowDebugColliders;
+		}
 
 		// TODO: Update all actors?
 		// I'm still not sure if I will have a dedicated input function for actors, maybe just do this on the update?
@@ -119,6 +123,11 @@ namespace Realiti2D {
 	void Application::Render() {
 
 		m_EntityManager->Render();
+
+		if (m_bShowDebugColliders) {
+			m_CollisionWorld->Render();
+		}
+
 		m_Renderer->Draw();
 		return;
 	}
