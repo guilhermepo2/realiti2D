@@ -32,6 +32,8 @@ namespace Realiti2D {
 				
 				if (Overlaps(a, b)) {
 					CORE_INFO("{0} collided with {1}", a->Owner->Name, b->Owner->Name);
+					a->CollisionCallback();
+					b->CollisionCallback();
 				}
 
 			}

@@ -40,10 +40,17 @@ namespace Realiti2D {
 
 		inline AABB* GetBoundingBox()  { return &m_AABB; }
 		inline Transform* GetTransform() { return m_TransformReference; }
+		
+		void CollisionCallback() {
+			if (m_CollisionCallback) {
+				m_CollisionCallback();
+			}
+		}
 
 	private:
 		AABB m_AABB;
 		Transform* m_TransformReference;
+		std::function<void()> m_CollisionCallback;
 	};
 
 }
