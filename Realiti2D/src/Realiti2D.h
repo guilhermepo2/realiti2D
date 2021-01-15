@@ -11,8 +11,12 @@
 #include "Realiti2D/Component/TransformComponent.h"
 #include "Realiti2D/Component/Sprite.h"
 #include "Realiti2D/Component/AnimatedSprite.h"
+#include "Realiti2D/Component/BoxCollider.h"
 
 #include "Realiti2D/Renderer/Renderer.h"
 
 #include "Realiti2D/Input/Input.h"
 #include "Realiti2D/Math/Math.h"
+
+#include "Realiti2D/Collision/Collider.h"
+#include "Realiti2D/Collision/CollisionWorld.h"

@@ -14,6 +14,17 @@ public:
 
 	virtual void BeginPlay()  {
 		DEBUG_INFO("Begin Play Tappy Plane");
+		m_Collider = Owner->GetComponentOfType<Realiti2D::BoxCollider>();
+
+		if (m_Collider == nullptr) {
+			DEBUG_INFO("Tappy Plane does not have a box collider!");
+		}
+
+		m_Collider->CollisionCallback = BIND_COLLISION(&PlaneInput::ExecuteThis);
+	}
+
+	void ExecuteThis(Realiti2D::BoxCollider* Other) {
+		DEBUG_INFO("Tappy plane collided with {0}", Other->Owner->Name);
 	}
 
 	void ProcessInput(const Realiti2D::InputState& CurrentInputState) {
@@ -44,6 +55,7 @@ private:
 	float m_UpForce = 325.0f;
 	float m_VerticalVelocity = 0.0f;
 	float m_Gravity = 500.0f;
+	Realiti2D::BoxCollider* m_Collider;
 };
 
 class Sandbox : public Realiti2D::Application {
@@ -75,6 +87,13 @@ public:
 		PlaneAnimation.AddAnimationTexture("assets/tappyplane/PNG/Planes/planeBlue3.png");
 		
 		PlaneEntity.AddComponent<PlaneInput>();
+		PlaneEntity.AddComponent<Realiti2D::BoxCollider>(Realiti2D::Vector2(-32.0f, -32.0f), Realiti2D::Vector2(32.0f, 32.0f));
+
+		// Colliosion Box (testing collision
+		Realiti2D::Entity& Box = AddEntity("Box");
+		Box.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(StartingXPosition, 200.0f), 0.0f, Realiti2D::Vector2(1.0f, 1.0f));
+		Box.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/UI/MedalGold.png");
+		Box.AddComponent<Realiti2D::BoxCollider>(Realiti2D::Vector2(-48.0f, -48.0f), Realiti2D::Vector2(48.0f, 48.0f));
 
 		// adding foreground
 		Realiti2D::Entity& Foreground = AddEntity("Foreground");

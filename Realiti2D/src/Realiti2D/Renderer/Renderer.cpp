@@ -5,6 +5,7 @@
 #include "SpriteRenderData.h"
 #include "Realiti2D/Log.h"
 #include <GL/glew.h>
+#include "Color.h"
 
 namespace Realiti2D {
 	Renderer* Renderer::s_Instance = nullptr;
@@ -15,14 +16,35 @@ namespace Realiti2D {
 	Renderer::~Renderer() {}
 
 	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale) {
+		AddToRenderQueue(Tex, Pos, Rot, Scale, m_White);
+	}
+
+	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, Color* _Color) {
 		SpriteRenderData rd = {
 			Tex,
 			Pos,
 			Rot,
-			Scale
+			Scale,
+			_Color,
+			Tex->GetWidth(),
+			Tex->GetHeight()
 		};
 
 		m_SpriteRenderDataQueue.push_back(rd);
+	}
+
+	void Renderer::AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale) {
+		Texture* tex = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
+		tex->SetWidth(Width);
+		tex->SetHeight(Height);
+
+		AddToRenderQueue(
+			tex,
+			Pos,
+			0,
+			Scale,
+			m_CollisionDebugRed
+		);
 	}
 
 	bool Renderer::Initialize(float ScreenWidth, float ScreenHeight, std::string WindowTitle) {
@@ -78,6 +100,15 @@ namespace Realiti2D {
 		CreateDefaultSpriteVertex();
 		
 		CORE_INFO("[renderer] renderer initialized");
+		CORE_INFO("[renderer] initializing default textures...");
+		Texture* white = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
+		
+		if (white != nullptr) { CORE_INFO("[renderer] Loaded white texture"); } 
+		else { CORE_WARNING("[renderer] failed to load white texture!"); }
+
+		m_White = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+		m_CollisionDebugRed = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+		
 		return true;
 
 	}
@@ -116,6 +147,7 @@ namespace Realiti2D {
 	}
 
 	void Renderer::Draw() {
+		// TODO: Customize the clear color somehow! (camera background color maybe?!)
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
@@ -139,12 +171,18 @@ namespace Realiti2D {
 		glm::mat4 CameraViewProj = CameraProjection * CameraView;
 		Matrix4 ViewProj(CameraViewProj);
 		m_DefaultSpriteShader->SetMatrixUniform("uViewProj", ViewProj);
+		m_DefaultSpriteShader->SetColorUniform("uTintColor", m_White);
 
 		while (!m_SpriteRenderDataQueue.empty()) {
+			// Can this create a memory leak? =======================================
 			SpriteRenderData RenderData = m_SpriteRenderDataQueue[0];
 			m_SpriteRenderDataQueue.erase(m_SpriteRenderDataQueue.begin());
+			// ======================================================================
 
 			if (RenderData.Texture) {
+				RenderData.Texture->SetWidth(RenderData.Width);
+				RenderData.Texture->SetHeight(RenderData.Height);
+				m_DefaultSpriteShader->SetColorUniform("uTintColor", RenderData._Color);
 
 				Matrix4 TextureScale = Matrix4::CreateScale(
 					static_cast<float>(RenderData.Texture->GetWidth()),
@@ -158,7 +196,6 @@ namespace Realiti2D {
 
 				Matrix4 World = (WorldTranslation * WorldRotation * WorldScale) * TextureScale;
 				m_DefaultSpriteShader->SetMatrixUniform("uWorldTransform", World);
-
 				RenderData.Texture->SetActive();
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 			}

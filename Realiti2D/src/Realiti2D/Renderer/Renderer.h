@@ -10,6 +10,7 @@ namespace Realiti2D {
 	class Shader;
 	class VertexArray;
 	struct SpriteRenderData;
+	class Color;
 
 	class Renderer {
 	public:
@@ -22,7 +23,6 @@ namespace Realiti2D {
 		void Draw();
 		void Shutdown();
 
-		void LoadTexture(const std::string& filePath);
 		Texture* GetTexture(const std::string& fileName);
 
 		inline float GetScreenWidth() const { return m_ScreenWidth; }
@@ -32,8 +32,14 @@ namespace Realiti2D {
 		inline SDL_GLContext& GetContext() { return m_GLContext; }
 
 		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale);
+		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, Color* _Color);
+		void AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale);
 	private:
 		std::vector<SpriteRenderData> m_SpriteRenderDataQueue;
+
+		// Commonly used colors...
+		Color* m_White;
+		Color* m_CollisionDebugRed;
 
 		bool LoadDefaultShaders();
 		void CreateDefaultSpriteVertex();

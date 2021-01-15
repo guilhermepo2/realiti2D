@@ -13,6 +13,8 @@ namespace Realiti2D {
 
 		int GetWidth() const { return m_Width; }
 		int GetHeight() const { return m_Height; }
+		void SetWidth(int value) { m_Width = value; }
+		void SetHeight(int value) { m_Height = value; }
 
 	private:
 		unsigned int m_TextureID;

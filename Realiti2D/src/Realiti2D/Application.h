@@ -1,14 +1,12 @@
 #pragma once
-#include <string>
-
-#include "Realiti2D/Entity/Entity.h"
-#include "Realiti2D/Entity/EntityManager.h"
+#include "Entity/EntityManager.h"
 
 namespace Realiti2D {
 
 	class EntityManager;
 	class Renderer;
 	class InputSystem;
+	class CollisionWorld;
 
 	class Application {
 	public:
@@ -34,6 +32,8 @@ namespace Realiti2D {
 		EntityManager* m_EntityManager;
 		Renderer* m_Renderer;
 		InputSystem* m_InputSystem;
+		CollisionWorld* m_CollisionWorld;
+		bool m_bShowDebugColliders;
 	};
 
 	// Defined in the client...

@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include "Realiti2D/Log.h"
+#include "Color.h"
 
 #include <fstream>
 #include <sstream>
@@ -52,6 +53,11 @@ namespace Realiti2D {
  				const GLfloat *value
 		); */
 		glUniformMatrix4fv(loc, 1, GL_FALSE, Matrix.GetAsFloatPointer());
+	}
+
+	void Shader::SetColorUniform(const char* Name, const Color* Color) {
+		GLuint loc = glGetUniformLocation(m_ShaderProgram, Name);
+		glUniform4fv(loc, 1, reinterpret_cast<const float*>((&Color->rgba)));
 	}
 	
 	// ------------------------------------------------
