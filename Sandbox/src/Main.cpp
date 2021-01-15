@@ -93,7 +93,7 @@ public:
 		Realiti2D::Entity& Box = AddEntity("Box");
 		Box.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(StartingXPosition, 200.0f), 0.0f, Realiti2D::Vector2(1.0f, 1.0f));
 		Box.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/UI/MedalGold.png");
-		Box.AddComponent<Realiti2D::BoxCollider>(Realiti2D::Vector2(-32.0f, -32.0f), Realiti2D::Vector2(32.0f, 32.0f));
+		Box.AddComponent<Realiti2D::BoxCollider>(Realiti2D::Vector2(-48.0f, -48.0f), Realiti2D::Vector2(48.0f, 48.0f));
 
 		// adding foreground
 		Realiti2D::Entity& Foreground = AddEntity("Foreground");
