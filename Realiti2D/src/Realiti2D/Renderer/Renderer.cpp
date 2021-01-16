@@ -15,9 +15,6 @@ namespace Realiti2D {
 	Renderer::Renderer() {}
 	Renderer::~Renderer() {}
 
-	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale) {
-		AddToRenderQueue(Tex, Pos, Rot, Scale, m_White);
-	}
 
 	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, Color* _Color) {
 		SpriteRenderData rd = {
@@ -31,6 +28,10 @@ namespace Realiti2D {
 		};
 
 		m_SpriteRenderDataQueue.push_back(rd);
+	}
+
+	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale) {
+		AddToRenderQueue(Tex, Pos, Rot, Scale, m_White);
 	}
 
 	void Renderer::AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale) {
@@ -111,7 +112,6 @@ namespace Realiti2D {
 		m_OrtographicCamera = new OrtographicCamera(m_ScreenWidth, m_ScreenHeight);
 		
 		return true;
-
 	}
 
 	bool Renderer::LoadDefaultShaders() {
@@ -210,7 +210,6 @@ namespace Realiti2D {
 	// ---------------------------------------------------------------
 	// Draw
 	// ---------------------------------------------------------------
-
 	Texture* Renderer::GetTexture(const std::string& fileName) {
 		Texture* tex = nullptr;
 		auto iter = m_Textures.find(fileName);
