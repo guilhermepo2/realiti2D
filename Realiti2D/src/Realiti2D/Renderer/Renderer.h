@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <string>
 #include <unordered_map>
+#include "OrtographicCamera.h"
 #include "Realiti2D/Math/Math.h"
 
 namespace Realiti2D {
@@ -40,6 +41,9 @@ namespace Realiti2D {
 		// Commonly used colors...
 		Color* m_White;
 		Color* m_CollisionDebugRed;
+
+		// Camera
+		OrtographicCamera* m_OrtographicCamera;
 
 		bool LoadDefaultShaders();
 		void CreateDefaultSpriteVertex();

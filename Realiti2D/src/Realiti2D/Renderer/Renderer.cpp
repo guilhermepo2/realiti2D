@@ -108,6 +108,7 @@ namespace Realiti2D {
 
 		m_White = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 		m_CollisionDebugRed = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+		m_OrtographicCamera = new OrtographicCamera(m_ScreenWidth, m_ScreenHeight);
 		
 		return true;
 
@@ -147,8 +148,13 @@ namespace Realiti2D {
 	}
 
 	void Renderer::Draw() {
-		// TODO: Customize the clear color somehow! (camera background color maybe?!)
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(
+			m_OrtographicCamera->R(),
+			m_OrtographicCamera->G(),
+			m_OrtographicCamera->B(),
+			m_OrtographicCamera->A()
+		);
+
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glEnable(GL_BLEND);
@@ -160,16 +166,7 @@ namespace Realiti2D {
 		m_DefaultSpriteVertexArray->SetActive();
 
 		// Camera
-		// TODO: Have Ortographic Camera Class
-		glm::mat4 CameraProjection = glm::ortho(
-			-(m_ScreenWidth / 2.0f), (m_ScreenWidth / 2.0f), 
-			-(m_ScreenHeight / 2.0f), (m_ScreenHeight / 2.0f), 
-			-10.0f, 10.0f
-		);
-		glm::mat4 CameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 10.0f));
-		glm::mat4 CameraView = glm::inverse(CameraTransform);
-		glm::mat4 CameraViewProj = CameraProjection * CameraView;
-		Matrix4 ViewProj(CameraViewProj);
+		Matrix4 ViewProj(m_OrtographicCamera->GetCameraViewProjection());
 		m_DefaultSpriteShader->SetMatrixUniform("uViewProj", ViewProj);
 		m_DefaultSpriteShader->SetColorUniform("uTintColor", m_White);
 
