@@ -31,7 +31,7 @@ namespace Realiti2D {
 		inline SDL_Window* GetWindow() { return m_Window; }
 		inline SDL_GLContext& GetContext() { return m_GLContext; }
 
-		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale);
+		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder);
 	private:
 		std::vector<SpriteRenderData> m_SpriteRenderDataQueue;
 

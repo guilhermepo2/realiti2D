@@ -10,5 +10,6 @@ namespace Realiti2D {
 		Vector2* Position;
 		float Rotation;
 		Vector2* Scale;
+		int DrawOrder;
 	};
 }

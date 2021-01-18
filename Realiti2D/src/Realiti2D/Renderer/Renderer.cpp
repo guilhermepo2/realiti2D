@@ -14,15 +14,24 @@ namespace Realiti2D {
 	Renderer::Renderer() {}
 	Renderer::~Renderer() {}
 
-	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale) {
+	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder) {
 		SpriteRenderData rd = {
 			Tex,
 			Pos,
 			Rot,
-			Scale
+			Scale,
+			DrawOrder
 		};
 
-		m_SpriteRenderDataQueue.push_back(rd);
+		// Ordered Sort here...
+		std::vector<SpriteRenderData>::iterator iter = m_SpriteRenderDataQueue.begin();
+		for (; iter != m_SpriteRenderDataQueue.end(); ++iter) {
+			if ( rd.DrawOrder < (*iter).DrawOrder) {
+				break;
+			}
+		}
+
+		m_SpriteRenderDataQueue.insert(iter, rd);
 	}
 
 	bool Renderer::Initialize(float ScreenWidth, float ScreenHeight, std::string WindowTitle) {
