@@ -10,7 +10,7 @@ This probably can use some cleanup, the functions codes are very similar, probab
 
 namespace Realiti2D {
 	bool JsonHelper::GetInt(const rapidjson::Value& InObject, const char* InProperty, int& OutInt) {
-		auto itr = InObject.FindMember("InProperty");
+		auto itr = InObject.FindMember(InProperty);
 		
 		if (itr == InObject.MemberEnd()) {
 			return false;
@@ -26,7 +26,7 @@ namespace Realiti2D {
 	}
 
 	bool JsonHelper::GetFloat(const rapidjson::Value& InObject, const char* InProperty, float& OutFloat) {
-		auto itr = InObject.FindMember("InProperty");
+		auto itr = InObject.FindMember(InProperty);
 
 		if (itr == InObject.MemberEnd()) {
 			return false;
@@ -42,7 +42,7 @@ namespace Realiti2D {
 	}
 
 	bool JsonHelper::GetString(const rapidjson::Value& InObject, const char* InProperty, std::string& OutString) {
-		auto itr = InObject.FindMember("InProperty");
+		auto itr = InObject.FindMember(InProperty);
 
 		if (itr == InObject.MemberEnd()) {
 			return false;
@@ -58,7 +58,7 @@ namespace Realiti2D {
 	}
 
 	bool JsonHelper::GetBool(const rapidjson::Value& InObject, const char* InProperty, bool& OutBool) {
-		auto itr = InObject.FindMember("InProperty");
+		auto itr = InObject.FindMember(InProperty);
 
 		if (itr == InObject.MemberEnd()) {
 			return false;
@@ -74,7 +74,7 @@ namespace Realiti2D {
 	}
 
 	bool JsonHelper::GetVector2(const rapidjson::Value& InObject, const char* InProperty, Vector2& OutVector) {
-		auto itr = InObject.FindMember("InProperty");
+		auto itr = InObject.FindMember(InProperty);
 
 		if (itr == InObject.MemberEnd()) {
 			return false;

@@ -16,3 +16,7 @@
 
 #include "Realiti2D/Input/Input.h"
 #include "Realiti2D/Math/Math.h"
+
+// Utilities
+#include "Realiti2D/Utilities/JsonHelper.h"
+#include "Realiti2D/Utilities/LevelLoader.h"

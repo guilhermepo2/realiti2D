@@ -125,7 +125,7 @@ project "Sandbox"
 		"Realiti2D/thirdparty/glew-2.1.0/include",
 		"Realiti2D/thirdparty/soil-0.0.3/include",
 		"Realiti2D/thirdparty/glm",
-		"Realiti2D/thirdparty/rapidson-1.1.0/include",
+		"Realiti2D/thirdparty/rapidjson-1.1.0/include",
 	}
 
 	links 
