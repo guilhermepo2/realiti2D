@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <string>
 #include <unordered_map>
+#include "OrtographicCamera.h"
 #include "Realiti2D/Math/Math.h"
 
 namespace Realiti2D {
@@ -10,6 +11,7 @@ namespace Realiti2D {
 	class Shader;
 	class VertexArray;
 	struct SpriteRenderData;
+	class Color;
 
 	class Renderer {
 	public:
@@ -22,7 +24,6 @@ namespace Realiti2D {
 		void Draw();
 		void Shutdown();
 
-		void LoadTexture(const std::string& filePath);
 		Texture* GetTexture(const std::string& fileName);
 
 		inline float GetScreenWidth() const { return m_ScreenWidth; }
@@ -31,9 +32,19 @@ namespace Realiti2D {
 		inline SDL_Window* GetWindow() { return m_Window; }
 		inline SDL_GLContext& GetContext() { return m_GLContext; }
 
+
 		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder);
+		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder, Color* _Color);
+		void AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale);
 	private:
 		std::vector<SpriteRenderData> m_SpriteRenderDataQueue;
+
+		// Commonly used colors...
+		Color* m_White;
+		Color* m_CollisionDebugRed;
+
+		// Camera
+		OrtographicCamera* m_OrtographicCamera;
 
 		bool LoadDefaultShaders();
 		void CreateDefaultSpriteVertex();

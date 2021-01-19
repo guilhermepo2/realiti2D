@@ -5,6 +5,7 @@
 #include "SpriteRenderData.h"
 #include "Realiti2D/Log.h"
 #include <GL/glew.h>
+#include "Color.h"
 
 namespace Realiti2D {
 	Renderer* Renderer::s_Instance = nullptr;
@@ -13,14 +14,18 @@ namespace Realiti2D {
 	// explicitly tell the modules when to do those kind of things
 	Renderer::Renderer() {}
 	Renderer::~Renderer() {}
-
-	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder) {
+  
+	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder, Color* _Color) {
 		SpriteRenderData rd = {
 			Tex,
 			Pos,
 			Rot,
 			Scale,
 			DrawOrder
+			_Color,
+      
+			Tex->GetWidth(),
+			Tex->GetHeight()
 		};
 
 		// Ordered Sort here...
@@ -32,6 +37,24 @@ namespace Realiti2D {
 		}
 
 		m_SpriteRenderDataQueue.insert(iter, rd);
+	}
+
+	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder) {
+		AddToRenderQueue(Tex, Pos, Rot, Scale, DrawOrder, m_White);
+	}
+
+	void Renderer::AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale) {
+		Texture* tex = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
+		tex->SetWidth(Width);
+		tex->SetHeight(Height);
+
+		AddToRenderQueue(
+			tex,
+			Pos,
+			0,
+			Scale,
+			m_CollisionDebugRed
+		);
 	}
 
 	bool Renderer::Initialize(float ScreenWidth, float ScreenHeight, std::string WindowTitle) {
@@ -87,8 +110,17 @@ namespace Realiti2D {
 		CreateDefaultSpriteVertex();
 		
 		CORE_INFO("[renderer] renderer initialized");
-		return true;
+		CORE_INFO("[renderer] initializing default textures...");
+		Texture* white = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
+		
+		if (white != nullptr) { CORE_INFO("[renderer] Loaded white texture"); } 
+		else { CORE_WARNING("[renderer] failed to load white texture!"); }
 
+		m_White = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+		m_CollisionDebugRed = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+		m_OrtographicCamera = new OrtographicCamera(m_ScreenWidth, m_ScreenHeight);
+		
+		return true;
 	}
 
 	bool Renderer::LoadDefaultShaders() {
@@ -125,7 +157,13 @@ namespace Realiti2D {
 	}
 
 	void Renderer::Draw() {
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(
+			m_OrtographicCamera->R(),
+			m_OrtographicCamera->G(),
+			m_OrtographicCamera->B(),
+			m_OrtographicCamera->A()
+		);
+
 		glClear(GL_COLOR_BUFFER_BIT);
 		
 		glEnable(GL_BLEND);
@@ -137,23 +175,20 @@ namespace Realiti2D {
 		m_DefaultSpriteVertexArray->SetActive();
 
 		// Camera
-		// TODO: Have Ortographic Camera Class
-		glm::mat4 CameraProjection = glm::ortho(
-			-(m_ScreenWidth / 2.0f), (m_ScreenWidth / 2.0f), 
-			-(m_ScreenHeight / 2.0f), (m_ScreenHeight / 2.0f), 
-			-10.0f, 10.0f
-		);
-		glm::mat4 CameraTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 10.0f));
-		glm::mat4 CameraView = glm::inverse(CameraTransform);
-		glm::mat4 CameraViewProj = CameraProjection * CameraView;
-		Matrix4 ViewProj(CameraViewProj);
+		Matrix4 ViewProj(m_OrtographicCamera->GetCameraViewProjection());
 		m_DefaultSpriteShader->SetMatrixUniform("uViewProj", ViewProj);
+		m_DefaultSpriteShader->SetColorUniform("uTintColor", m_White);
 
 		while (!m_SpriteRenderDataQueue.empty()) {
+			// Can this create a memory leak? =======================================
 			SpriteRenderData RenderData = m_SpriteRenderDataQueue[0];
 			m_SpriteRenderDataQueue.erase(m_SpriteRenderDataQueue.begin());
+			// ======================================================================
 
 			if (RenderData.Texture) {
+				RenderData.Texture->SetWidth(RenderData.Width);
+				RenderData.Texture->SetHeight(RenderData.Height);
+				m_DefaultSpriteShader->SetColorUniform("uTintColor", RenderData._Color);
 
 				Matrix4 TextureScale = Matrix4::CreateScale(
 					static_cast<float>(RenderData.Texture->GetWidth()),
@@ -167,7 +202,6 @@ namespace Realiti2D {
 
 				Matrix4 World = (WorldTranslation * WorldRotation * WorldScale) * TextureScale;
 				m_DefaultSpriteShader->SetMatrixUniform("uWorldTransform", World);
-
 				RenderData.Texture->SetActive();
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 			}
@@ -185,7 +219,6 @@ namespace Realiti2D {
 	// ---------------------------------------------------------------
 	// Draw
 	// ---------------------------------------------------------------
-
 	Texture* Renderer::GetTexture(const std::string& fileName) {
 		Texture* tex = nullptr;
 		auto iter = m_Textures.find(fileName);

@@ -11,6 +11,7 @@
 #include "Realiti2D/Component/TransformComponent.h"
 #include "Realiti2D/Component/Sprite.h"
 #include "Realiti2D/Component/AnimatedSprite.h"
+#include "Realiti2D/Component/BoxCollider.h"
 
 #include "Realiti2D/Renderer/Renderer.h"
 
@@ -20,3 +21,7 @@
 // Utilities
 #include "Realiti2D/Utilities/JsonHelper.h"
 #include "Realiti2D/Utilities/LevelLoader.h"
+
+// Collision
+#include "Realiti2D/Collision/Collider.h"
+#include "Realiti2D/Collision/CollisionWorld.h"

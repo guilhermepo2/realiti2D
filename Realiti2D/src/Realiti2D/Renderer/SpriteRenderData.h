@@ -4,6 +4,7 @@ namespace Realiti2D {
 
 	class Vector2;
 	class Texture;
+	class Color;
 
 	struct SpriteRenderData {
 		Texture* Texture;
@@ -11,5 +12,9 @@ namespace Realiti2D {
 		float Rotation;
 		Vector2* Scale;
 		int DrawOrder;
+		Color* _Color;
+
+		float Width;
+		float Height;
 	};
 }
