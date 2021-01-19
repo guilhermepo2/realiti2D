@@ -1,5 +1,7 @@
 #include "LevelLoader.h"
 #include "JsonHelper.h"
+#include "ComponentFactory.h"
+
 #include "Realiti2D/Log.h"
 #include "Realiti2D/Application.h"
 #include "Realiti2D/Entity/Entity.h"
@@ -118,9 +120,27 @@ namespace Realiti2D {
 			if (Component.IsObject()) {
 				std::string ComponentType;
 				if (JsonHelper::GetString(Component, "type", ComponentType)) {
-					CORE_INFO("Entity has component of type {0}", ComponentType.c_str());
-					e.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(50 * (i+1), 0.0f), 0.0f, Realiti2D::Vector2(1.0f, 1.0f));
-					e.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/Planes/planeBlue1.png");
+
+					// switch on  the component types and add the appropriate function call from the component factory here
+					// this is bad for some reasons...
+					// When I add a new component, I have to add a case here and add the function into the component factory
+					// So how does it work for new components made for games?
+					// maybe I have a generic "NativeScript" component?
+					// and for lua scripting, a generic "LuaScript" component
+
+					if (ComponentType == "Transform") {
+						ComponentFactory::AddTransformComponent(e, Component);
+					}
+					else if (ComponentType == "Sprite") {
+						ComponentFactory::AddSpriteComponent(e, Component);
+					}
+					else if (ComponentType == "AnimatedSprite") {
+						ComponentFactory::AddAnimatedSpriteComponent(e, Component);
+					}
+					else {
+						CORE_ERROR("Component not handled: {0}", ComponentType.c_str());
+					}
+
 				}
 			}
 		}
