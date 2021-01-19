@@ -67,6 +67,11 @@ public:
 
 		DEBUG_INFO("starting app");
 
+		Realiti2D::LevelLoader::LoadLevel(this, "assets/SampleLevel.r2d");
+		Realiti2D::Entity* PlaneEntity = GetEntityByName("Plane");
+		PlaneEntity->AddComponent<PlaneInput>();
+    
+    /*
 		// Adding a background
 		Realiti2D::Entity& Background = AddEntity("Background");
 		Background.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, 0.0f), 0.0f, Realiti2D::Vector2(1.75f, 1.5f));
@@ -100,6 +105,7 @@ public:
 		float ForegroundYPosition = (-SCREEN_HEIGHT / 2.0f) + 15.0f;
 		Foreground.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, ForegroundYPosition), 0.0f, Realiti2D::Vector2(1.75f, 1.0f));
 		Foreground.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/groundGrass.png");
+    */
 	}
 
 private:

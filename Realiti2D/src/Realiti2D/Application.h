@@ -18,6 +18,7 @@ namespace Realiti2D {
 		static bool s_bIsInitialized;
 
 		Entity& AddEntity(std::string InName) { return m_EntityManager->AddEntity(InName); };
+		Entity* GetEntityByName(std::string InName) { return m_EntityManager->GetEntityByName(InName); }
 
 	protected:
 		virtual void Start();

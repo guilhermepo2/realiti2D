@@ -37,4 +37,14 @@ namespace Realiti2D {
 		m_Entities.push_back(NewEntity);
 		return *NewEntity;
 	}
+
+	Entity* EntityManager::GetEntityByName(const std::string& EntityName) {
+		for (int i = 0; i < m_Entities.size(); i++) {
+			if (m_Entities[i]->Name == EntityName) {
+				return m_Entities[i];
+			}
+		}
+
+		return nullptr;
+	}
 }

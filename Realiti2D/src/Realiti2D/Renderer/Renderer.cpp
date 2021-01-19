@@ -14,24 +14,33 @@ namespace Realiti2D {
 	// explicitly tell the modules when to do those kind of things
 	Renderer::Renderer() {}
 	Renderer::~Renderer() {}
-
-
-	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, Color* _Color) {
+  
+	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder, Color* _Color) {
 		SpriteRenderData rd = {
 			Tex,
 			Pos,
 			Rot,
 			Scale,
+			DrawOrder
 			_Color,
+      
 			Tex->GetWidth(),
 			Tex->GetHeight()
 		};
 
-		m_SpriteRenderDataQueue.push_back(rd);
+		// Ordered Sort here...
+		std::vector<SpriteRenderData>::iterator iter = m_SpriteRenderDataQueue.begin();
+		for (; iter != m_SpriteRenderDataQueue.end(); ++iter) {
+			if ( rd.DrawOrder < (*iter).DrawOrder) {
+				break;
+			}
+		}
+
+		m_SpriteRenderDataQueue.insert(iter, rd);
 	}
 
-	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale) {
-		AddToRenderQueue(Tex, Pos, Rot, Scale, m_White);
+	void Renderer::AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder) {
+		AddToRenderQueue(Tex, Pos, Rot, Scale, DrawOrder, m_White);
 	}
 
 	void Renderer::AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale) {

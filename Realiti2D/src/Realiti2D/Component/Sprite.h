@@ -10,11 +10,13 @@ namespace Realiti2D {
 	class Sprite : public Component {
 	public:
 		Texture* tex;
+		int DrawOrder;
 
 		Sprite() : tex(nullptr) {}
 		
-		Sprite(const std::string& TexturePath) {
+		Sprite(const std::string& TexturePath, int _DrawOrder) {
 			tex = Renderer::s_Instance->GetTexture(TexturePath);
+			DrawOrder = _DrawOrder;
 		}
 
 		void SetTexture(Texture* _tex) {

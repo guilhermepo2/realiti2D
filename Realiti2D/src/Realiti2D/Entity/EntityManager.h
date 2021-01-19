@@ -3,6 +3,7 @@
 #include <string>
 
 namespace Realiti2D {
+
 	class Entity;
 	struct InputState;
 
@@ -18,6 +19,7 @@ namespace Realiti2D {
 		// TODO: Get Entities?
 		inline int GetEntitiesCount() const { return m_Entities.size(); }
 		inline bool HasEntities() const { return m_Entities.size() > 0; }
+		Entity* GetEntityByName(const std::string& EntityName);
 
 	private:
 		std::vector<Entity*> m_Entities;
