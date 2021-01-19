@@ -55,35 +55,8 @@ public:
 
 		DEBUG_INFO("starting app");
 		Realiti2D::LevelLoader::LoadLevel(this, "assets/SampleLevel.r2d");
-
-		/*
-		// Adding a background
-		Realiti2D::Entity& Background = AddEntity("Background");
-		Background.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, 0.0f), 0.0f, Realiti2D::Vector2(1.75f, 1.5f));
-		Background.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/background.png");
-
-		// TODO: Add obstacle(s)... <- this should be another component....
-
-		// Plane
-		Realiti2D::Entity& PlaneEntity = AddEntity("Plane");
-		float StartingXPosition = (-(SCREEN_WIDTH / 2)) + 175;
-		PlaneEntity.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(StartingXPosition, 0.0f), 0.0f, Realiti2D::Vector2(1.0f, 1.0f));
-		PlaneEntity.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/Planes/planeBlue1.png");
-
-		Realiti2D::AnimatedSprite& PlaneAnimation = PlaneEntity.AddComponent<Realiti2D::AnimatedSprite>();
-		PlaneAnimation.SetAnimationFPS(24.0f);
-		PlaneAnimation.AddAnimationTexture("assets/tappyplane/PNG/Planes/planeBlue1.png");
-		PlaneAnimation.AddAnimationTexture("assets/tappyplane/PNG/Planes/planeBlue2.png");
-		PlaneAnimation.AddAnimationTexture("assets/tappyplane/PNG/Planes/planeBlue3.png");
-		
-		PlaneEntity.AddComponent<PlaneInput>();
-
-		// adding foreground
-		Realiti2D::Entity& Foreground = AddEntity("Foreground");
-		float ForegroundYPosition = (-SCREEN_HEIGHT / 2.0f) + 15.0f;
-		Foreground.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, ForegroundYPosition), 0.0f, Realiti2D::Vector2(1.75f, 1.0f));
-		Foreground.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/groundGrass.png");
-		*/
+		Realiti2D::Entity* PlaneEntity = GetEntityByName("Plane");
+		PlaneEntity->AddComponent<PlaneInput>();
 	}
 
 private:
