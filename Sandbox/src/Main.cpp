@@ -17,10 +17,12 @@ public:
 		m_Collider = Owner->GetComponentOfType<Realiti2D::BoxCollider>();
 
 		if (m_Collider == nullptr) {
-			DEBUG_INFO("Tappy Plane does not have a box collider!");
+			DEBUG_ERROR("Tappy Plane does not have a box collider!");
+		}
+		else {
+			m_Collider->CollisionCallback = BIND_COLLISION(&PlaneInput::ExecuteThis);
 		}
 
-		m_Collider->CollisionCallback = BIND_COLLISION(&PlaneInput::ExecuteThis);
 	}
 
 	void ExecuteThis(Realiti2D::BoxCollider* Other) {
@@ -64,48 +66,11 @@ public:
 	~Sandbox() {}
 
 	void Start() override {
-
 		DEBUG_INFO("starting app");
 
 		Realiti2D::LevelLoader::LoadLevel(this, "assets/SampleLevel.r2d");
 		Realiti2D::Entity* PlaneEntity = GetEntityByName("Plane");
 		PlaneEntity->AddComponent<PlaneInput>();
-    
-    /*
-		// Adding a background
-		Realiti2D::Entity& Background = AddEntity("Background");
-		Background.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, 0.0f), 0.0f, Realiti2D::Vector2(1.75f, 1.5f));
-		Background.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/background.png");
-
-		// TODO: Add obstacle(s)... <- this should be another component....
-
-		// Plane
-		Realiti2D::Entity& PlaneEntity = AddEntity("Plane");
-		float StartingXPosition = (-(SCREEN_WIDTH / 2)) + 175;
-		PlaneEntity.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(StartingXPosition, 0.0f), 0.0f, Realiti2D::Vector2(1.0f, 1.0f));
-		PlaneEntity.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/Planes/planeBlue1.png");
-
-		Realiti2D::AnimatedSprite& PlaneAnimation = PlaneEntity.AddComponent<Realiti2D::AnimatedSprite>();
-		PlaneAnimation.SetAnimationFPS(24.0f);
-		PlaneAnimation.AddAnimationTexture("assets/tappyplane/PNG/Planes/planeBlue1.png");
-		PlaneAnimation.AddAnimationTexture("assets/tappyplane/PNG/Planes/planeBlue2.png");
-		PlaneAnimation.AddAnimationTexture("assets/tappyplane/PNG/Planes/planeBlue3.png");
-		
-		PlaneEntity.AddComponent<PlaneInput>();
-		PlaneEntity.AddComponent<Realiti2D::BoxCollider>(Realiti2D::Vector2(-32.0f, -32.0f), Realiti2D::Vector2(32.0f, 32.0f));
-
-		// Colliosion Box (testing collision
-		Realiti2D::Entity& Box = AddEntity("Box");
-		Box.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(StartingXPosition, 200.0f), 0.0f, Realiti2D::Vector2(1.0f, 1.0f));
-		Box.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/UI/MedalGold.png");
-		Box.AddComponent<Realiti2D::BoxCollider>(Realiti2D::Vector2(-48.0f, -48.0f), Realiti2D::Vector2(48.0f, 48.0f));
-
-		// adding foreground
-		Realiti2D::Entity& Foreground = AddEntity("Foreground");
-		float ForegroundYPosition = (-SCREEN_HEIGHT / 2.0f) + 15.0f;
-		Foreground.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, ForegroundYPosition), 0.0f, Realiti2D::Vector2(1.75f, 1.0f));
-		Foreground.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/groundGrass.png");
-    */
 	}
 
 private:

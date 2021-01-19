@@ -7,6 +7,7 @@
 #include "Realiti2D/Component/TransformComponent.h"
 #include "Realiti2D/Component/Sprite.h"
 #include "Realiti2D/Component/AnimatedSprite.h"
+#include "Realiti2D/Component/BoxCollider.h"
 
 namespace Realiti2D {
 	void ComponentFactory::AddTransformComponent(Entity& e, const rapidjson::Value& TransformComponentJSON) {
@@ -62,6 +63,18 @@ namespace Realiti2D {
 				AnimationComponent.AddAnimationTexture(Textures[i]);
 			}
 
+		}
+	}
+
+	void ComponentFactory::AddBoxColliderComponent(Entity& e, const rapidjson::Value& BoxColliderComponentJSON) {
+		if (BoxColliderComponentJSON.HasMember("properties")) {
+			const rapidjson::Value& Properties = BoxColliderComponentJSON["properties"];
+			Vector2 MinBounds;
+			JsonHelper::GetVector2(Properties, "min", MinBounds);
+			Vector2 MaxBounds;
+			JsonHelper::GetVector2(Properties, "max", MaxBounds);
+
+			e.AddComponent<Realiti2D::BoxCollider>(MinBounds, MaxBounds);
 		}
 	}
 }

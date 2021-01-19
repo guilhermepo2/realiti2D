@@ -137,6 +137,9 @@ namespace Realiti2D {
 					else if (ComponentType == "AnimatedSprite") {
 						ComponentFactory::AddAnimatedSpriteComponent(e, Component);
 					}
+					else if (ComponentType == "BoxCollider") {
+						ComponentFactory::AddBoxColliderComponent(e, Component);
+					}
 					else {
 						CORE_ERROR("Component not handled: {0}", ComponentType.c_str());
 					}

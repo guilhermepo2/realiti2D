@@ -21,7 +21,7 @@ namespace Realiti2D {
 			Pos,
 			Rot,
 			Scale,
-			DrawOrder
+			DrawOrder,
 			_Color,
       
 			Tex->GetWidth(),
@@ -53,6 +53,7 @@ namespace Realiti2D {
 			Pos,
 			0,
 			Scale,
+			100,
 			m_CollisionDebugRed
 		);
 	}

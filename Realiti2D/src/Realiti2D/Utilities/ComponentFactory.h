@@ -10,5 +10,6 @@ namespace Realiti2D {
 		static void AddTransformComponent(Entity& e, const rapidjson::Value& TransformComponentJSON);
 		static void AddSpriteComponent(Entity& e, const rapidjson::Value& SpriteComponentJSON);
 		static void AddAnimatedSpriteComponent(Entity& e, const rapidjson::Value& AnimatedSpriteComponentJSON);
+		static void AddBoxColliderComponent(Entity& e, const rapidjson::Value& BoxColliderComponentJSON);
 	};
 }
