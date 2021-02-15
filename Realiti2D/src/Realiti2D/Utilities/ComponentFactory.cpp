@@ -58,10 +58,14 @@ namespace Realiti2D {
 			}
 
 			Realiti2D::AnimatedSprite& AnimationComponent = e.AddComponent<Realiti2D::AnimatedSprite>();
+			// TODO: THIS IS BROKEN!
+			// the structure of animation component changed to allow having more than one animation
+			/*
 			AnimationComponent.SetAnimationFPS(AnimationFPS);
 			for (int i = 0; i < Textures.size(); i++) {
 				AnimationComponent.AddAnimationTexture(Textures[i]);
 			}
+			*/
 
 		}
 	}
