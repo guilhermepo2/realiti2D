@@ -34,6 +34,8 @@ namespace Realiti2D {
 	public:
 		AnimatedSprite() { }
 
+		~AnimatedSprite() { }
+
 		void Initialize() override {
 			m_CurrentAnimation = nullptr;
 		}
@@ -62,6 +64,16 @@ namespace Realiti2D {
 			if (m_AnimationList.count(ClipID) != 0) {
 				return m_AnimationList[ClipID];
 			}
+		}
+
+		virtual void Destroy() override {
+			CORE_INFO("[animated sprite] deleting animation clips on '{0}' entity", Owner->Name);
+			for (std::map<std::string, AnimationClip*>::iterator itr = m_AnimationList.begin(); itr != m_AnimationList.end(); itr++) {
+				delete itr->second;
+			}
+
+			m_SpriteReference = nullptr; // not this component's responsibility to clean the sprite reference
+			m_CurrentAnimation = nullptr;
 		}
 
 	private:
