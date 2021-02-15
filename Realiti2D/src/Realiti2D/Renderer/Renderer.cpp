@@ -120,6 +120,7 @@ namespace Realiti2D {
 		m_White = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 		m_CollisionDebugRed = new Color(1.0f, 0.0f, 0.0f, 0.5f);
 		m_OrtographicCamera = new OrtographicCamera(m_ScreenWidth, m_ScreenHeight);
+		m_OrtographicCamera->SetBackgroundColor(0.5f, 0.5f, 0.5f, 1.0f);
 		
 		return true;
 	}

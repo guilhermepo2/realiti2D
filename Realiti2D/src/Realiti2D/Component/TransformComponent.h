@@ -16,5 +16,9 @@ namespace Realiti2D {
 			Rotation = InRotation;
 			Scale = InScale;
 		}
+
+		void Translate(Vector2& DeltaMovement) {
+			Position += DeltaMovement;
+		}
 	};
 }

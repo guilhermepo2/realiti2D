@@ -22,6 +22,12 @@ namespace Realiti2D {
 			return Vector2(x * Scalar, y * Scalar);
 		}
 
+		// Vector / Scalar
+		template<typename T>
+		Vector2 operator/(const T& Scalar) const {
+			return Vector2(x / Scalar, y / Scalar);
+		}
+
 		// Vector2 *= Scalar
 		template<typename T>
 		Vector2 operator*=(const T& Scalar) {
