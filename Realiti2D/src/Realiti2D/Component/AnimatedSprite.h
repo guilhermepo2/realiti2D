@@ -8,9 +8,10 @@ namespace Realiti2D {
 		std::vector<Texture*> m_AnimationTextures;
 		float m_CurrentFrame;
 		float m_AnimationFPS;
+		bool bShouldLoop;
 
 		AnimationClip() : m_CurrentFrame(0.0f), m_AnimationFPS(24.0f) {}
-		AnimationClip(float _fps) : m_CurrentFrame(0.0f), m_AnimationFPS(_fps) {}
+		AnimationClip(float _fps, bool _bShouldLoop) : m_CurrentFrame(0.0f), m_AnimationFPS(_fps), bShouldLoop(_bShouldLoop) {}
 
 		inline void SetAnimationFPS(float _fps) { m_AnimationFPS = _fps; }
 
@@ -23,9 +24,16 @@ namespace Realiti2D {
 			if (m_AnimationTextures.size() > 0) {
 				m_CurrentFrame += m_AnimationFPS * DeltaTime;
 
-				while (m_CurrentFrame >= m_AnimationTextures.size()) {
-					m_CurrentFrame -= m_AnimationTextures.size();
+				if (bShouldLoop) {
+					while (m_CurrentFrame >= m_AnimationTextures.size()) {
+						m_CurrentFrame -= m_AnimationTextures.size();
+					}
 				}
+				else {
+					// CORE_INFO("Current Frame {0}", m_CurrentFrame);
+					m_CurrentFrame = Math::Min(m_CurrentFrame, (float)m_AnimationTextures.size() - 1);
+				}
+
 			}
 		}
 	};
@@ -47,15 +55,20 @@ namespace Realiti2D {
 		void Update(float DeltaTime) override {
 			if (m_CurrentAnimation != nullptr) {
 				m_CurrentAnimation->Update(DeltaTime);
+				int AnimationFrame = static_cast<int>(m_CurrentAnimation->m_CurrentFrame);
 				m_SpriteReference->SetTexture(
-					m_CurrentAnimation->m_AnimationTextures[static_cast<int>(m_CurrentAnimation->m_CurrentFrame)]
+					m_CurrentAnimation->m_AnimationTextures[AnimationFrame]
 				);
 			}
 		}
 
 		void Play(std::string AnimationName) {
 			if (m_AnimationList.count(AnimationName) != 0) {
-				m_CurrentAnimation = m_AnimationList[AnimationName];
+
+				if (!IsPlayingAnimation(AnimationName)) {
+					m_CurrentAnimation = m_AnimationList[AnimationName];
+					m_CurrentAnimation->m_CurrentFrame = 0.0f;
+				}
 			}
 		}
 
@@ -75,6 +88,9 @@ namespace Realiti2D {
 			m_SpriteReference = nullptr; // not this component's responsibility to clean the sprite reference
 			m_CurrentAnimation = nullptr;
 		}
+
+		inline bool IsAnimationOnLastFrame() const { return static_cast<int>(m_CurrentAnimation->m_CurrentFrame) == (m_CurrentAnimation->m_AnimationTextures.size() - 1); }
+		inline bool IsPlayingAnimation(std::string _anim) { return m_AnimationList[_anim] == m_CurrentAnimation; }
 
 	private:
 		Sprite* m_SpriteReference;
