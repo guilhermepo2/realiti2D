@@ -30,7 +30,6 @@ namespace Realiti2D {
 					}
 				}
 				else {
-					// CORE_INFO("Current Frame {0}", m_CurrentFrame);
 					m_CurrentFrame = Math::Min(m_CurrentFrame, (float)m_AnimationTextures.size() - 1);
 				}
 

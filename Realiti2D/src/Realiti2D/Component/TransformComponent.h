@@ -20,5 +20,9 @@ namespace Realiti2D {
 		void Translate(Vector2& DeltaMovement) {
 			Position += DeltaMovement;
 		}
+
+		void ChangeScaleXSign(int Sign) {
+			Scale.x = Sign * Math::Abs(Scale.x);
+		}
 	};
 }

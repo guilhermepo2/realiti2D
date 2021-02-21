@@ -27,4 +27,9 @@ namespace Realiti2D::Math {
 	T Abs(const T& Value) {
 		return glm::abs(Value);
 	}
+
+	template<typename T>
+	T Sign(const T& Value) {
+		return glm::sign(Value);
+	}
 }
