@@ -112,6 +112,7 @@ namespace Realiti2D {
 		
 		CORE_INFO("[renderer] renderer initialized");
 		CORE_INFO("[renderer] initializing default textures...");
+		// [FIX] THIS IS TERRIBLE
 		Texture* white = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
 		
 		if (white != nullptr) { CORE_INFO("[renderer] Loaded white texture"); } 
@@ -128,7 +129,7 @@ namespace Realiti2D {
 	bool Renderer::LoadDefaultShaders() {
 		m_DefaultSpriteShader = new Shader();
 
-		// lol this is awful. help.
+		// [FIX] THIS IS TERRIBLE
 		if (!m_DefaultSpriteShader->Load
 			(
 				"E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Shaders\\Sprite.vert",

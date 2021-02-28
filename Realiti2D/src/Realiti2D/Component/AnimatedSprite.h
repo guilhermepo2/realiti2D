@@ -80,7 +80,7 @@ namespace Realiti2D {
 
 		virtual void Destroy() override {
 			CORE_INFO("[animated sprite] deleting animation clips on '{0}' entity", Owner->Name);
-			for (std::map<std::string, AnimationClip*>::iterator itr = m_AnimationList.begin(); itr != m_AnimationList.end(); itr++) {
+			for (std::unordered_map<std::string, AnimationClip*>::iterator itr = m_AnimationList.begin(); itr != m_AnimationList.end(); itr++) {
 				delete itr->second;
 			}
 
@@ -93,7 +93,7 @@ namespace Realiti2D {
 
 	private:
 		Sprite* m_SpriteReference;
-		std::map<std::string, AnimationClip*> m_AnimationList;
+		std::unordered_map<std::string, AnimationClip*> m_AnimationList;
 		AnimationClip* m_CurrentAnimation;
 	};
 }
