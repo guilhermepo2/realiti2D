@@ -7,6 +7,9 @@
 #include <GL/glew.h>
 #include "Color.h"
 
+#define DEFAULT_ASSETS_PATH std::string("C:\\workspace\\jumpv.main\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\")
+#define DEFAULT_ASSET(x) DEFAULT_ASSETS_PATH+x
+
 namespace Realiti2D {
 	Renderer* Renderer::s_Instance = nullptr;
 
@@ -44,7 +47,7 @@ namespace Realiti2D {
 	}
 
 	void Renderer::AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale) {
-		Texture* tex = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
+		Texture* tex = GetTexture(DEFAULT_ASSET("White.png"));
 		tex->SetWidth(Width);
 		tex->SetHeight(Height);
 
@@ -113,7 +116,7 @@ namespace Realiti2D {
 		CORE_INFO("[renderer] renderer initialized");
 		CORE_INFO("[renderer] initializing default textures...");
 		// [FIX] THIS IS TERRIBLE
-		Texture* white = GetTexture("E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\White.png");
+		Texture* white = GetTexture(DEFAULT_ASSET("White.png"));
 		
 		if (white != nullptr) { CORE_INFO("[renderer] Loaded white texture"); } 
 		else { CORE_WARNING("[renderer] failed to load white texture!"); }
@@ -132,8 +135,8 @@ namespace Realiti2D {
 		// [FIX] THIS IS TERRIBLE
 		if (!m_DefaultSpriteShader->Load
 			(
-				"E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Shaders\\Sprite.vert",
-				"E:\\Workspace\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\Shaders\\Sprite.frag")
+				DEFAULT_ASSET("Shaders\\Sprite.vert"),
+				DEFAULT_ASSET("Shaders\\Sprite.frag"))
 			) 
 		{
 			return false;
