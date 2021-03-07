@@ -5,6 +5,7 @@
 #include "Entity/EntityManager.h"
 #include "Collision/CollisionWorld.h"
 
+#include <imgui_impl_sdl.h>
 
 const unsigned int FPS = 60;
 const unsigned int FRAME_TARGET_TIME = 1000 / FPS;
@@ -86,6 +87,11 @@ namespace Realiti2D {
 
 		SDL_Event FrameEvent;
 		while (SDL_PollEvent(&FrameEvent)) {
+
+			// Also sending this event to dear im gui...
+			// the UI layering system thing would come in handy here...
+			ImGui_ImplSDL2_ProcessEvent(&FrameEvent);
+
 			switch (FrameEvent.type) {
 			case SDL_QUIT:
 				m_bIsRunning = false;
@@ -130,6 +136,7 @@ namespace Realiti2D {
 		}
 
 		m_Renderer->Draw();
+
 		return;
 	}
 }

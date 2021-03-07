@@ -272,7 +272,7 @@ namespace Realiti2D {
 	}
 
 	// ---------------------------------------------------------------
-	// Draw
+	// Get Texture
 	// ---------------------------------------------------------------
 	Texture* Renderer::GetTexture(const std::string& fileName) {
 		Texture* tex = nullptr;
