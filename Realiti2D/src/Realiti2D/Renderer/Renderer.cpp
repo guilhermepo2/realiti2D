@@ -1,11 +1,17 @@
+#include "Color.h"
+#include "Realiti2D/Log.h"
 #include "Renderer.h"
+#include "SpriteRenderData.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexArray.h"
-#include "SpriteRenderData.h"
-#include "Realiti2D/Log.h"
+
+// dear imgui
+#include <imgui.h>
+#include <imgui_impl_sdl.h>
+#include <imgui_impl_opengl3.h>
 #include <GL/glew.h>
-#include "Color.h"
+
 
 #define DEFAULT_ASSETS_PATH std::string("C:\\workspace\\jumpv.main\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\")
 #define DEFAULT_ASSET(x) DEFAULT_ASSETS_PATH+x
@@ -121,6 +127,21 @@ namespace Realiti2D {
 		if (white != nullptr) { CORE_INFO("[renderer] Loaded white texture"); } 
 		else { CORE_WARNING("[renderer] failed to load white texture!"); }
 
+		// setting up Dear ImGui
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;	// enable keyboard control
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;		// enable docking
+		// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// enable multi-viewport
+		ImGui::StyleColorsDark();
+		// setting up platform renderer backend
+		ImGui_ImplSDL2_InitForOpenGL(m_Window, m_GLContext);
+		const char* glsl_version = "#version 330";
+		ImGui_ImplOpenGL3_Init(glsl_version);
+		// TODO: Load Fonts (?)
+		m_bRenderDearImGui = false;
+
 		m_White = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 		m_CollisionDebugRed = new Color(1.0f, 0.0f, 0.0f, 0.5f);
 		m_OrtographicCamera = new OrtographicCamera(m_ScreenWidth, m_ScreenHeight);
@@ -163,6 +184,7 @@ namespace Realiti2D {
 	}
 
 	void Renderer::Draw() {
+
 		glClearColor(
 			m_OrtographicCamera->R(),
 			m_OrtographicCamera->G(),
@@ -213,11 +235,38 @@ namespace Realiti2D {
 			}
 		}
 
+		
+
+		if (m_bRenderDearImGui) {
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplSDL2_NewFrame(m_Window);
+			ImGui::NewFrame();
+
+			// showing a sample window...
+			// TODO: Have Layers to go though and render here ?!
+			{
+				ImGui::Begin("sample window");
+				ImGui::Text("Hello from Dear ImGui!");
+				ImGui::End();
+			}
+
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		}
+
+		
+
 		SDL_GL_SwapWindow(m_Window);
 	}
 
 	void Renderer::Shutdown() {
 		CORE_INFO("[renderer] shutting down renderer");
+
+		// shutting of Dear ImGui
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplSDL2_Shutdown();
+		ImGui::DestroyContext();
+
 		SDL_GL_DeleteContext(m_GLContext);
 		SDL_DestroyWindow(m_Window);
 	}

@@ -104,6 +104,9 @@ namespace Realiti2D {
 		else if (m_InputSystem->GetState().Keyboard.WasKeyPressedThisFrame(KEYCODE_F1)) {
 			m_bShowDebugColliders = !m_bShowDebugColliders;
 		}
+		else if (m_InputSystem->GetState().Keyboard.WasKeyPressedThisFrame(KEYCODE_F2)) {
+			m_Renderer->ToggleRenderImGui();
+		}
 
 		m_EntityManager->ProcessInput(m_InputSystem->GetState());
 	}

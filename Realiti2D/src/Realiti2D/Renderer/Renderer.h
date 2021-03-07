@@ -36,6 +36,8 @@ namespace Realiti2D {
 		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder);
 		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder, Color* _Color);
 		void AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale);
+
+		inline void ToggleRenderImGui() { m_bRenderDearImGui = !m_bRenderDearImGui; }
 	private:
 		std::vector<SpriteRenderData> m_SpriteRenderDataQueue;
 
@@ -60,5 +62,7 @@ namespace Realiti2D {
 
 		SDL_Window* m_Window;
 		SDL_GLContext m_GLContext;
+
+		bool m_bRenderDearImGui;
 	};
 }

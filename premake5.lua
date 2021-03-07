@@ -17,6 +17,7 @@ IncludeDir["GLEW"] = "%{prj.name}/thirdparty/glew-2.1.0/include"
 IncludeDir["SOIL"] = "%{prj.name}/thirdparty/soil-0.0.3/include"
 IncludeDir["GLM"] = "%{prj.name}/thirdparty/glm"
 IncludeDir["RAPIDJSON"] = "%{prj.name}/thirdparty/rapidjson-1.1.0/include"
+IncludeDir["DEARIMGUI"] = "%{prj.name}/thirdparty/dearimgui"
 LibDir = {}
 LibDir["SDL2"] = "Realiti2D/thirdparty/SDL2-2.0.12/lib/x64"
 LibDir["GLEW"] = "Realiti2D/thirdparty/glew-2.1.0/lib/Release/x64"
@@ -54,7 +55,9 @@ project "Realiti2D"
 		-- this is temporary (and bad), I should fix this.
 
 		"%{prj.name}/thirdparty/soil-0.0.3/include/SOIL/**.h",
-		"%{prj.name}/thirdparty/soil-0.0.3/src/**.c"
+		"%{prj.name}/thirdparty/soil-0.0.3/src/**.c",
+		"%{prj.name}/thirdparty/dearimgui/*.h",
+		"%{prj.name}/thirdparty/dearimgui/*.cpp"
     }
 
     includedirs
@@ -66,6 +69,7 @@ project "Realiti2D"
 		"%{IncludeDir.SOIL}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.RAPIDJSON}",
+		"%{IncludeDir.DEARIMGUI}",
 	}
 	
 	libdirs
