@@ -25,3 +25,6 @@
 // Collision
 #include "Realiti2D/Collision/Collider.h"
 #include "Realiti2D/Collision/CollisionWorld.h"
+
+// UI
+#include "Realiti2D/UI/DearImGui/ImGuiWindow.h"

@@ -7,6 +7,7 @@
 
 namespace Realiti2D {
 
+	class ImGuiWindow;
 	class Texture;
 	class Shader;
 	class VertexArray;
@@ -38,8 +39,10 @@ namespace Realiti2D {
 		void AddQuadToRenderQueue(Vector2* Pos, int Width, int Height, Vector2* Scale);
 
 		inline void ToggleRenderImGui() { m_bRenderDearImGui = !m_bRenderDearImGui; }
+		inline void PushDearImGuiWindow(ImGuiWindow* w) { m_ImGuiWindows.push_back(w); }
 	private:
 		std::vector<SpriteRenderData> m_SpriteRenderDataQueue;
+		std::vector<ImGuiWindow*> m_ImGuiWindows;
 
 		// Commonly used colors...
 		Color* m_White;

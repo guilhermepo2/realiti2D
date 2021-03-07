@@ -1,5 +1,6 @@
 #include "Color.h"
 #include "Realiti2D/Log.h"
+#include "Realiti2D/UI/DearImGui/ImGuiWindow.h"
 #include "Renderer.h"
 #include "SpriteRenderData.h"
 #include "Shader.h"
@@ -135,6 +136,7 @@ namespace Realiti2D {
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;		// enable docking
 		// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// enable multi-viewport
 		ImGui::StyleColorsDark();
+
 		// setting up platform renderer backend
 		ImGui_ImplSDL2_InitForOpenGL(m_Window, m_GLContext);
 		const char* glsl_version = "#version 330";
@@ -244,10 +246,16 @@ namespace Realiti2D {
 
 			// showing a sample window...
 			// TODO: Have Layers to go though and render here ?!
+			
 			{
 				ImGui::Begin("sample window");
 				ImGui::Text("Hello from Dear ImGui!");
 				ImGui::End();
+			}
+			
+
+			for (int i = 0; i < m_ImGuiWindows.size(); i++) {
+				m_ImGuiWindows[i]->DrawWindow();
 			}
 
 			ImGui::Render();
