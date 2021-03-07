@@ -43,6 +43,16 @@ namespace Realiti2D {
 			return *this;
 		}
 
+		// Vector2 + Vector2
+		friend Vector2 operator+(const Vector2& a, const Vector2& b) {
+			return Vector2(a.x + b.x, a.y + b.y);
+		}
+
+		// Vector2 - Vector2
+		friend Vector2 operator-(const Vector2& a, const Vector2& b) {
+			return Vector2(a.x - b.x, a.y - b.y);
+		}
+
 	public:
 		static const Vector2 Zero;
 	};

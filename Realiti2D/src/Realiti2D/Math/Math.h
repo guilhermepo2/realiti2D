@@ -3,6 +3,7 @@
 // The Math Module is basically just syntatic sugar for glm.
 
 #include <glm/glm.hpp>
+#include <limits>
 #include "Vector2.h"
 #include "Matrix4.h"
 #include "Quaternion.h"
@@ -32,4 +33,6 @@ namespace Realiti2D::Math {
 	T Sign(const T& Value) {
 		return glm::sign(Value);
 	}
+
+	const static float FloatInfinity = std::numeric_limits<float>::max();
 }

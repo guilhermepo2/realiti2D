@@ -1,7 +1,9 @@
 #pragma once
 #include "CollisionWorld.h"
 #include "Collider.h"
+#include "LineSegment.h"
 #include "Realiti2D/Component/BoxCollider.h"
+#include "Realiti2D/Math/Math.h"
 #include "Realiti2D/Renderer/Renderer.h"
 
 namespace Realiti2D {
@@ -57,6 +59,36 @@ namespace Realiti2D {
 
 			}
 		}
+	}
+
+	bool CollisionWorld::SegmentCast(Vector2 StartingPoint, Vector2 EndingPoint, CollisionInfo& OutCollisionInfo) {
+
+		bool bCollided = false;
+		LineSegment l(StartingPoint, EndingPoint);
+		float closestT = Math::FloatInfinity;
+
+		// Test against all boxes
+		for (BoxCollider* collider : m_WorldColliders) {
+			float t;
+			// [TODO] function to create AABB from Collider?
+			AABB ColliderAABB = {
+				Vector2(collider->GetTransform()->Position.x + collider->GetBoundingBox()->MinPoint.x, collider->GetTransform()->Position.y + collider->GetBoundingBox()->MinPoint.y),
+				Vector2(collider->GetTransform()->Position.x + collider->GetBoundingBox()->MaxPoint.x, collider->GetTransform()->Position.y + collider->GetBoundingBox()->MaxPoint.y)
+			};
+			
+			if (CheckLineCollision(l, ColliderAABB, t)) {
+				// collided with something...
+				if (t < closestT) {
+					OutCollisionInfo.PointOfCollision = l.PointOnSegment(t);
+					OutCollisionInfo.CollidedWith = collider;
+					OutCollisionInfo.CollidedEntity = collider->Owner;
+					bCollided = true;
+				}
+			}
+
+		}
+
+		return bCollided;
 	}
 
 	void CollisionWorld::AddColliderToWorld(BoxCollider* Collider) {
