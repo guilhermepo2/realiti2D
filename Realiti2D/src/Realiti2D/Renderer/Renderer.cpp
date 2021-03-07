@@ -244,16 +244,8 @@ namespace Realiti2D {
 			ImGui_ImplSDL2_NewFrame(m_Window);
 			ImGui::NewFrame();
 
-			// showing a sample window...
-			// TODO: Have Layers to go though and render here ?!
+			// ImGui::ShowDemoWindow();
 			
-			{
-				ImGui::Begin("sample window");
-				ImGui::Text("Hello from Dear ImGui!");
-				ImGui::End();
-			}
-			
-
 			for (int i = 0; i < m_ImGuiWindows.size(); i++) {
 				m_ImGuiWindows[i]->DrawWindow();
 			}
