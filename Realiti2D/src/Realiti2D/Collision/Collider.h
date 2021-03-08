@@ -42,7 +42,7 @@ namespace Realiti2D {
 		for (float i = 0; i <= 1.0f; i += steps) {
 			if (Rect.Contains(l.PointOnSegment(i))) {
 				
-				DEBUG_INFO("Collided with t: {0}", i);
+				// DEBUG_INFO("Collided with t: {0}", i);
 
 				outT = i;
 				return true;

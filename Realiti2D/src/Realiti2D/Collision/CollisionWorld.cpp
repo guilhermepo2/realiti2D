@@ -70,11 +70,32 @@ namespace Realiti2D {
 		// Test against all boxes
 		for (BoxCollider* collider : m_WorldColliders) {
 			float t;
-			// [TODO] function to create AABB from Collider?
-			AABB ColliderAABB = {
-				Vector2(collider->GetTransform()->Position.x + collider->GetBoundingBox()->MinPoint.x, collider->GetTransform()->Position.y + collider->GetBoundingBox()->MinPoint.y),
-				Vector2(collider->GetTransform()->Position.x + collider->GetBoundingBox()->MaxPoint.x, collider->GetTransform()->Position.y + collider->GetBoundingBox()->MaxPoint.y)
-			};
+			
+			Vector2 AABBMin = collider->GetTransform()->Position;
+			Vector2 MinPoint = collider->GetBoundingBox()->MinPoint;
+			MinPoint.x *= collider->GetTransform()->Scale.x;
+			MinPoint.y *= collider->GetTransform()->Scale.y;
+			AABBMin += MinPoint;
+
+			Vector2 AABBMax = collider->GetTransform()->Position;
+			Vector2 MaxPoint = collider->GetBoundingBox()->MaxPoint;
+			MaxPoint.x *= collider->GetTransform()->Scale.x;
+			MaxPoint.y *= collider->GetTransform()->Scale.y;
+			AABBMax += MaxPoint;
+			AABB ColliderAABB = { AABBMin, AABBMax };
+
+			// More Debug
+			/*
+			Vector2* m = new Vector2(AABBMin.x, AABBMin.y);
+			Vector2* m2 = new Vector2(AABBMax.x, AABBMax.y);
+			Renderer::s_Instance->AddQuadToRenderQueue(m, 2.0, 2.0f, &(collider->GetTransform()->Scale));
+			Renderer::s_Instance->AddQuadToRenderQueue(m2, 2.0f, 2.0f, &(collider->GetTransform()->Scale));
+			float Width = ((AABBMax.x - AABBMin.x));
+			Vector2* m3 = new Vector2(AABBMax.x, AABBMax.y);
+			m3->x -= Width / 2.0f;
+			Width /= collider->GetTransform()->Scale.x;
+			Renderer::s_Instance->AddQuadToRenderQueue(m3, Width, 1.0f, &(collider->GetTransform()->Scale));
+			*/
 			
 			if (CheckLineCollision(l, ColliderAABB, t)) {
 				// collided with something...
