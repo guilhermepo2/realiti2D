@@ -13,6 +13,9 @@
 #include <imgui_impl_opengl3.h>
 #include <GL/glew.h>
 
+// todo: find a way to define this outside here (ideally on visions.cpp or on the premake file)
+#define VISIONS_EDITOR
+
 
 #define DEFAULT_ASSETS_PATH std::string("C:\\workspace\\jumpv.main\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\")
 #define DEFAULT_ASSET(x) DEFAULT_ASSETS_PATH+x
@@ -92,11 +95,16 @@ namespace Realiti2D {
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);									// Enables double buffering
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
+		SDL_WindowFlags WindowFlags = SDL_WINDOW_OPENGL;
+#ifdef VISIONS_EDITOR
+		WindowFlags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+#endif
+
 		m_Window = SDL_CreateWindow(
 			m_WindowTitle.c_str(),
 			100, 100,				// top left and y coordinates of the window... whatever
 			static_cast<int>(m_ScreenWidth), static_cast<int>(m_ScreenHeight),
-			SDL_WINDOW_OPENGL
+			WindowFlags
 		);
 
 		if (!m_Window) {
@@ -106,6 +114,9 @@ namespace Realiti2D {
 
 		// Creating the OpenGL Context
 		m_GLContext = SDL_GL_CreateContext(m_Window);
+		SDL_GL_MakeCurrent(m_Window, m_GLContext);
+		SDL_GL_SetSwapInterval(1); // Enable vsync
+
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK) {
 			CORE_ERROR("[renderer] unable to initialize glew.");
@@ -134,8 +145,18 @@ namespace Realiti2D {
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;	// enable keyboard control
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;		// enable docking
-		// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// enable multi-viewport
+#ifdef VISIONS_EDITOR
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// enable multi-viewport
+#endif
 		ImGui::StyleColorsDark();
+
+#ifdef VISIONS_EDITOR
+		ImGuiStyle& style = ImGui::GetStyle();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+#endif
 
 		// setting up platform renderer backend
 		ImGui_ImplSDL2_InitForOpenGL(m_Window, m_GLContext);
@@ -237,15 +258,71 @@ namespace Realiti2D {
 			}
 		}
 
-		
 
+#ifdef VISIONS_EDITOR
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL2_NewFrame(m_Window);
+		ImGui::NewFrame();
+
+		// ======================================================================================
+		// ======================================================================================
+		// Editor Stuff goes here!
+
+		// Create Dockspace...
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
+		if (ImGui::BeginMainMenuBar()) {
+			
+			if (ImGui::BeginMenu("File")) {
+				if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Options")) {
+				if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+		}
+
+		ImGui::ShowDemoWindow();
+		/*
+
+		{
+			ImGui::Begin("Hierarchy");
+			ImGui::End();
+
+			ImGui::Begin("Scene");
+			ImGui::End();
+		}
+		*/
+
+		// ======================================================================================
+		// ======================================================================================
+
+		ImGui::Render();
+
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+			SDL_Window* BackupCurrentWindow = SDL_GL_GetCurrentWindow();
+			SDL_GLContext BackupCurrentContext = SDL_GL_GetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			SDL_GL_MakeCurrent(BackupCurrentWindow, BackupCurrentContext);
+		}
+#else
 		if (m_bRenderDearImGui) {
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplSDL2_NewFrame(m_Window);
 			ImGui::NewFrame();
 
 			// ImGui::ShowDemoWindow();
-			
+
 			for (int i = 0; i < m_ImGuiWindows.size(); i++) {
 				m_ImGuiWindows[i]->DrawWindow();
 			}
@@ -253,9 +330,9 @@ namespace Realiti2D {
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
+#endif
 
 		
-
 		SDL_GL_SwapWindow(m_Window);
 	}
 

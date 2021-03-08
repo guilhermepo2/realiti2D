@@ -8,7 +8,7 @@ workspace "Realiti2D"
         "Dist"
 	}
 	
-	startproject "Sandbox"
+	startproject "VisionsEditor"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
@@ -107,6 +107,64 @@ project "Realiti2D"
 		defines "R2D_DIST"
         optimize "On"
         
+project "VisionsEditor"
+		location "VisionsEditor"
+		kind "ConsoleApp"
+		language "C++"
+
+		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+		files
+		{
+			"%{prj.name}/src/**.h",
+			"%{prj.name}/src/**.cpp"
+		}
+
+		includedirs
+		{
+			"Realiti2D/src",
+			"Realiti2D/thirdparty/spdlog/include",
+			"Realiti2D/thirdparty/SDL2-2.0.12/include",
+			"Realiti2D/thirdparty/glew-2.1.0/include",
+			"Realiti2D/thirdparty/soil-0.0.3/include",
+			"Realiti2D/thirdparty/glm",
+			"Realiti2D/thirdparty/rapidjson-1.1.0/include",
+			"Realiti2D/thirdparty/dearimgui",
+		}
+
+		links 
+		{
+			"Realiti2D"
+		}
+
+		postbuildcommands
+		{
+		
+		}
+
+		filter "system:windows"
+			cppdialect "C++17"
+			staticruntime "On"
+			systemversion "latest"
+
+			defines 
+			{
+			}
+
+		filter "configurations:Debug"
+			defines { "R2D_DEBUG", "VISIONS_EDITOR" }
+			symbols "On"
+
+		filter "configurations:Release"
+			defines { "R2D_RELEASE", "VISIONS_EDITOR" }
+			optimize "On"
+
+		filter "configurations:Dist"
+			defines { "R2D_DIST", "VISIONS_EDITOR" }
+			optimize "On"
+
+
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
