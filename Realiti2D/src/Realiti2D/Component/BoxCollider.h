@@ -11,11 +11,14 @@ namespace Realiti2D {
 	
 	class BoxCollider : public Component {
 	public:
-		BoxCollider(const Vector2 MinPoint, const Vector2& MaxPoint) {
+		BoxCollider(const Vector2& MinPoint, const Vector2& MaxPoint) {
 			m_AABB.MinPoint = MinPoint;
 			m_AABB.MaxPoint = MaxPoint;
 			CollisionWorld::s_Instance->AddColliderToWorld(this);
+		}
 
+		BoxCollider(std::string ColliderTag, const Vector2& MinPoint, const Vector2& MaxPoint) : BoxCollider(MinPoint, MaxPoint) {
+			m_ColliderTag = ColliderTag;
 		}
 
 		~BoxCollider() {
@@ -36,9 +39,11 @@ namespace Realiti2D {
 		}
 
 		std::function<void(BoxCollider*)> CollisionCallback;
+		const std::string& GetTag() const { return m_ColliderTag; }
 	private:
 		AABB m_AABB;
 		Transform* m_TransformReference;
+		std::string m_ColliderTag;
 	};
 
 }

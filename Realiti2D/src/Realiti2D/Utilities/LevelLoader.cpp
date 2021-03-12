@@ -7,6 +7,7 @@
 #include "Realiti2D/Entity/Entity.h"
 #include "Realiti2D/Component/TransformComponent.h"
 #include "Realiti2D/Component/Sprite.h"
+#include "Realiti2D/Layer/GameLayer.h"
 
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
@@ -16,7 +17,7 @@
 #define DEBUG_LEVEL_LOADER 0
 
 namespace Realiti2D {
-	bool LevelLoader::LoadLevel(Application* app, std::string FileName) {
+	bool LevelLoader::LoadLevel(GameLayer* TheGameLayer, std::string FileName) {
 		// Loading JSON
 		rapidjson::Document doc;
 		if (!LoadJSON(FileName, doc)) {
@@ -50,7 +51,7 @@ namespace Realiti2D {
 		// Getting Actors and their Components
 		const rapidjson::Value& Entities = doc["entities"];
 		if (Entities.IsArray()) {
-			LoadEntities(app, Entities);
+			LoadEntities(TheGameLayer, Entities);
 		}
 
 		return true;
@@ -87,7 +88,7 @@ namespace Realiti2D {
 		return;
 	}
 
-	void LevelLoader::LoadEntities(Application* app, const rapidjson::Value& InObject) {
+	void LevelLoader::LoadEntities(GameLayer* TheGameLayer, const rapidjson::Value& InObject) {
 		// We can assume that the InObject is an array.
 		for (rapidjson::SizeType i = 0; i < InObject.Size(); i++) {
 			const rapidjson::Value& Entity = InObject[i];
@@ -96,7 +97,7 @@ namespace Realiti2D {
 				std::string EntityName;
 				if (JsonHelper::GetString(Entity, "name", EntityName)) {
 					CORE_INFO("Entity on Level File: {0}", EntityName.c_str());
-					Realiti2D::Entity& e = app->AddEntity(EntityName);
+					Realiti2D::Entity& e = TheGameLayer->AddEntity(EntityName);
 
 					// Checking for components and calling the function to load the components
 					if (Entity.HasMember("components")) {

@@ -4,6 +4,8 @@
 #include "Renderer/Renderer.h"
 #include "Entity/EntityManager.h"
 #include "Collision/CollisionWorld.h"
+#include "Layer/LayerStack.h"
+#include "Layer/GameLayer.h"
 
 #include <imgui_impl_sdl.h>
 
@@ -21,7 +23,6 @@ namespace Realiti2D {
 		m_TicksLastFrame(0.0f) {
 
 		CORE_INFO("[application] initializing application");
-
 		ASSERT(!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER), "[application] unable to initialize sdl");
 
 		m_Renderer = new Renderer();
@@ -30,14 +31,17 @@ namespace Realiti2D {
 		m_InputSystem = new InputSystem();
 		ASSERT(m_InputSystem->Initialize(), "[application] unable to initialize input system");
 
-		m_EntityManager = new EntityManager();
-
-		m_CollisionWorld = new CollisionWorld();
-		ASSERT(m_CollisionWorld->Initialize(), "[application] unable to initialize collision world");
-		m_bShowDebugColliders = false;
+		m_LayerStack = new LayerStack();
 
 		s_bIsInitialized = true;
 		m_bIsRunning = true;
+	}
+
+	GameLayer* Application::PushGameLayer() {
+		GameLayer* gl = new GameLayer();
+		gl->Initialize();
+		m_LayerStack->PushLayer(gl);
+		return gl;
 	}
 
 	Application::~Application() {
@@ -49,9 +53,7 @@ namespace Realiti2D {
 		m_InputSystem->Shutdown();
 		delete m_InputSystem;
 
-		m_EntityManager->Destroy(); // is Destroy() here the right function to call?
-		delete m_EntityManager;
-
+		delete m_LayerStack;
 
 	}
 
@@ -59,7 +61,10 @@ namespace Realiti2D {
 		CORE_INFO("[application] running app");
 
 		Start();
-		m_EntityManager->BeginPlay();
+		// begin play is a game specific concept... duh...
+		for (Layer* l : m_LayerStack->GetLayers()) {
+			l->BeginPlay();
+		}
 
 		while (m_bIsRunning) {
 			// -------------------------------------------
@@ -83,18 +88,12 @@ namespace Realiti2D {
 	void Application::Start() { }
 
 	void Application::ProcessInput() {
+		// this has to be done before the new SDL Events are processed...
 		m_InputSystem->PrepareForUpdate();
 
 		SDL_Event FrameEvent;
 		while (SDL_PollEvent(&FrameEvent)) {
 
-
-			// so this is where the "Layers" idea would come in handy
-			// for each layer in layers: if(layer->HandleEvent(FrameEvent)) break;
-			// if it's not handled I can throw a warning here...
-			
-			// Also sending this event to dear im gui...
-			// the UI layering system thing would come in handy here...
 			ImGui_ImplSDL2_ProcessEvent(&FrameEvent);
 
 			switch (FrameEvent.type) {
@@ -112,32 +111,29 @@ namespace Realiti2D {
 		if (m_InputSystem->GetState().Keyboard.WasKeyPressedThisFrame(KEYCODE_ESCAPE)) {
 			m_bIsRunning = false;
 		}
-		else if (m_InputSystem->GetState().Keyboard.WasKeyPressedThisFrame(KEYCODE_F1)) {
-			m_bShowDebugColliders = !m_bShowDebugColliders;
-		}
 		else if (m_InputSystem->GetState().Keyboard.WasKeyPressedThisFrame(KEYCODE_F2)) {
 			m_Renderer->ToggleRenderImGui();
 		}
 
-		m_EntityManager->ProcessInput(m_InputSystem->GetState());
+		for (Layer* l : m_LayerStack->GetLayers()) {
+			if (l->OnApplicationEvent(m_InputSystem->GetState())) {
+				break;
+			}
+		}
 	}
 
 	void Application::Update(float DeltaTime) {
-		m_EntityManager->Update(DeltaTime);
 
-		// TODO: Is this the best place for this? I guess so, checking all collisions is, in a sense, the "Update" for the Collision World
-		// Maybe I should just m_CollisionWorld->Update() ?
-		m_CollisionWorld->VerifyAllCollisions();
+		for (Layer* l : m_LayerStack->GetLayers()) {
+			l->Update(DeltaTime);
+		}
 
-		return;
 	}
 
 	void Application::Render() {
 
-		m_EntityManager->Render();
-
-		if (m_bShowDebugColliders) {
-			m_CollisionWorld->Render();
+		for (Layer* l : m_LayerStack->GetLayers()) {
+			l->Render();
 		}
 
 		m_Renderer->Draw();

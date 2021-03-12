@@ -4,6 +4,11 @@
 #include "Realiti2D/EntryPoint.h"
 #include "Realiti2D/Log.h"
 
+// Layers
+#include "Realiti2D/Layer/LayerStack.h"
+#include "Realiti2D/Layer/Layer.h"
+#include "Realiti2D/Layer/GameLayer.h"
+
 #include "Realiti2D/Entity/Entity.h"
 #include "Realiti2D/Entity/EntityManager.h"
 

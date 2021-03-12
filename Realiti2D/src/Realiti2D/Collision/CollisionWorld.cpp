@@ -42,8 +42,6 @@ namespace Realiti2D {
 	}
 
 	void CollisionWorld::Shutdown() {}
-	
-	// TODO: Add a raycast function that checks if the cast intersects with any of the box colliders! return a collision info struct
 
 	void CollisionWorld::VerifyAllCollisions() {
 		for (size_t i = 0; i < m_WorldColliders.size(); i++) {

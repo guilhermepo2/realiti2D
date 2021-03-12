@@ -12,7 +12,7 @@ namespace Realiti2D {
 		virtual ~Component		() {}
 		virtual void Initialize	() {}
 		virtual void BeginPlay	() {}
-		virtual void ProcessInput(const InputState& CurrentInputState) {}
+		virtual bool ProcessInput(const InputState& CurrentInputState) { return false; }
 		virtual void Update		(float DeltaTime) {}
 		virtual void Render		() {}
 		virtual void Destroy	() {}

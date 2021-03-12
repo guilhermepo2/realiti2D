@@ -8,10 +8,14 @@ namespace Realiti2D {
 		}
 	}
 
-	void EntityManager::ProcessInput(const InputState& CurrentInputState) {
+	bool EntityManager::ProcessInput(const InputState& CurrentInputState) {
 		for (Entity* e : m_Entities) {
-			e->ProcessInput(CurrentInputState);
+			if (e->ProcessInput(CurrentInputState)) {
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	void EntityManager::Update(float DeltaTime) {
