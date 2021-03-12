@@ -88,6 +88,11 @@ namespace Realiti2D {
 		SDL_Event FrameEvent;
 		while (SDL_PollEvent(&FrameEvent)) {
 
+
+			// so this is where the "Layers" idea would come in handy
+			// for each layer in layers: if(layer->HandleEvent(FrameEvent)) break;
+			// if it's not handled I can throw a warning here...
+			
 			// Also sending this event to dear im gui...
 			// the UI layering system thing would come in handy here...
 			ImGui_ImplSDL2_ProcessEvent(&FrameEvent);
