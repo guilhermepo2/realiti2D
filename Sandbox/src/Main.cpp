@@ -48,10 +48,13 @@ public:
 		// DEBUG_INFO("Tappy plane collided with {0}", Other->Owner->Name);
 	}
 
-	void ProcessInput(const Realiti2D::InputState& CurrentInputState) {
+	bool ProcessInput(const Realiti2D::InputState& CurrentInputState) {
 		if (CurrentInputState.Mouse.WasMouseKeyPressedThisFrame(Realiti2D::R2D_Mousecode::MOUSECODE_LEFT)) {
 			m_VerticalVelocity = m_UpForce;
+			return true;
 		}
+
+		return false;
 	}
 
 	void Update(float DeltaTime) {
@@ -86,13 +89,14 @@ public:
 
 	void Start() override {
 		DEBUG_INFO("starting app");
+		Realiti2D::GameLayer* TheGameLayer = PushGameLayer();
 
-		Realiti2D::LevelLoader::LoadLevel(this, "assets/SampleLevel.r2d");
+		Realiti2D::LevelLoader::LoadLevel(TheGameLayer, "assets/SampleLevel.r2d");
 
-		Realiti2D::Entity* PlaneEntity = GetEntityByName("Plane");
+		Realiti2D::Entity* PlaneEntity = TheGameLayer->GetEntityByName("Plane");
 		PlaneEntity->AddComponent<PlaneInput>();
 
-		Realiti2D::Entity& Obstacle = AddEntity("Obstacle");
+		Realiti2D::Entity& Obstacle = TheGameLayer->AddEntity("Obstacle");
 		Obstacle.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(25.0f, -150.0f), 0.0f, Realiti2D::Vector2(2.0f, 2.0f));
 		Obstacle.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/rock.png", 5);
 		Obstacle.AddComponent<Realiti2D::BoxCollider>("Obstacle", Realiti2D::Vector2(-50.0f, -115.0f), Realiti2D::Vector2(50.0f, 115.0f));

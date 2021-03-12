@@ -3,10 +3,12 @@
 
 namespace Realiti2D {
 
-	class EntityManager;
-	class Renderer;
-	class InputSystem;
 	class CollisionWorld;
+	class EntityManager;
+	class GameLayer;
+	class InputSystem;
+	class LayerStack;
+	class Renderer;
 
 	class Application {
 	public:
@@ -17,24 +19,21 @@ namespace Realiti2D {
 
 		static bool s_bIsInitialized;
 
-		Entity& AddEntity(std::string InName) { return m_EntityManager->AddEntity(InName); };
-		Entity* GetEntityByName(std::string InName) { return m_EntityManager->GetEntityByName(InName); }
-
 	protected:
 		virtual void Start();
 		void ProcessInput();
 		void Update(float DeltaTime);
 		void Render();
 
+		GameLayer* PushGameLayer();
+
 	private:
 		bool m_bIsRunning;
 		float m_TicksLastFrame;
 
-		EntityManager* m_EntityManager;
 		Renderer* m_Renderer;
 		InputSystem* m_InputSystem;
-		CollisionWorld* m_CollisionWorld;
-		bool m_bShowDebugColliders;
+		LayerStack* m_LayerStack;
 	};
 
 	// Defined in the client...
