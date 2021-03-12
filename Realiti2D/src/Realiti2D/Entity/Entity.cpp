@@ -9,7 +9,6 @@ namespace Realiti2D {
 	Entity::Entity(std::string InName) : Name(InName) {}
 
 	void Entity::BeginPlay() {
-		CORE_INFO("[entity] begin play...");
 		for (Component* c : m_Components) {
 			c->BeginPlay();
 		}
@@ -22,7 +21,6 @@ namespace Realiti2D {
 	}
 
 	void Entity::Update(float DeltaTime) {
-		// CORE_INFO("[entity] update...");
 		for (Component* c : m_Components) {
 			c->Update(DeltaTime);
 		}
@@ -30,6 +28,7 @@ namespace Realiti2D {
 
 	void Entity::Render() {
 
+		// Should this really be here?!
 		if (HasComponentOfType<Transform>() && HasComponentOfType<Sprite>()) {
 			Transform* t = GetComponentOfType<Transform>();
 			Sprite* s = GetComponentOfType<Sprite>();
@@ -37,14 +36,12 @@ namespace Realiti2D {
 			Renderer::s_Instance->AddToRenderQueue(s->tex, &(t->Position), t->Rotation, &(t->Scale), s->DrawOrder);
 		}
 
-		// CORE_INFO("[entity] render...");
 		for (Component* c : m_Components) {
 			c->Render();
 		}
 	}
 
 	void Entity::Destroy() {
-		CORE_INFO("[entity] destroy...");
 		for (Component* c : m_Components) {
 			c->Destroy();
 		}

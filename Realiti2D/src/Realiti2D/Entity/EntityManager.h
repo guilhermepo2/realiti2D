@@ -15,10 +15,9 @@ namespace Realiti2D {
 		void Render();
 		void Destroy();
 
-		Entity& AddEntity(std::string EntityName);
-		// TODO: Get Entities?
 		inline int GetEntitiesCount() const { return m_Entities.size(); }
 		inline bool HasEntities() const { return m_Entities.size() > 0; }
+		Entity& AddEntity(std::string EntityName);
 		Entity* GetEntityByName(const std::string& EntityName);
 
 	private:

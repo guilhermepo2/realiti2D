@@ -88,8 +88,7 @@ namespace Realiti2D {
 		SDL_Event FrameEvent;
 		while (SDL_PollEvent(&FrameEvent)) {
 
-			// Also sending this event to dear im gui...
-			// the UI layering system thing would come in handy here...
+			// some layering system thing would come in handy here...
 			ImGui_ImplSDL2_ProcessEvent(&FrameEvent);
 
 			switch (FrameEvent.type) {
