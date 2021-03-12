@@ -2,6 +2,19 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+class ObstacleComponent : public Realiti2D::Component {
+public:
+	ObstacleComponent() {}
+	~ObstacleComponent() {}
+
+	void Update(float DeltaTime) override {
+		Owner->GetComponentOfType<Realiti2D::Transform>()->Translate(Realiti2D::Vector2(m_Velocity * DeltaTime, 0.0f));
+	}
+
+private:
+	float m_Velocity = -100.0f;
+};
+
 class PlaneInput : public Realiti2D::Component {
 
 public:
@@ -28,7 +41,11 @@ public:
 	}
 
 	void ExecuteThis(Realiti2D::BoxCollider* Other) {
-		DEBUG_INFO("Tappy plane collided with {0}", Other->Owner->Name);
+		if (Other->GetTag() == "Obstacle") {
+			DEBUG_ERROR("YOU LOST THE GAME!");
+		}
+
+		// DEBUG_INFO("Tappy plane collided with {0}", Other->Owner->Name);
 	}
 
 	void ProcessInput(const Realiti2D::InputState& CurrentInputState) {
@@ -74,6 +91,12 @@ public:
 
 		Realiti2D::Entity* PlaneEntity = GetEntityByName("Plane");
 		PlaneEntity->AddComponent<PlaneInput>();
+
+		Realiti2D::Entity& Obstacle = AddEntity("Obstacle");
+		Obstacle.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(25.0f, -150.0f), 0.0f, Realiti2D::Vector2(2.0f, 2.0f));
+		Obstacle.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/rock.png", 5);
+		Obstacle.AddComponent<Realiti2D::BoxCollider>("Obstacle", Realiti2D::Vector2(-50.0f, -115.0f), Realiti2D::Vector2(50.0f, 115.0f));
+		Obstacle.AddComponent<ObstacleComponent>();
 	}
 
 private:
