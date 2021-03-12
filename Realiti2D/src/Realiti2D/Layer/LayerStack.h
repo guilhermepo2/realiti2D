@@ -13,6 +13,7 @@ namespace Realiti2D {
 		void PushLayer(Layer* _Layer);
 		void PopLayer(Layer* _Layer);
 
+		const std::vector<Layer*>& GetLayers() { return m_Layers; }
 	private:
 		std::vector<Layer*> m_Layers;
 	};

@@ -10,7 +10,7 @@ namespace Realiti2D {
 	class EntityManager {
 	public:
 		void BeginPlay();
-		void ProcessInput(const InputState& CurrentInputState);
+		bool ProcessInput(const InputState& CurrentInputState);
 		void Update(float DeltaTime);
 		void Render();
 		void Destroy();

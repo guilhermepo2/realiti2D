@@ -23,7 +23,7 @@ namespace Realiti2D {
 
 	public:
 		virtual void BeginPlay();
-		virtual void ProcessInput(const InputState& CurrentInputState);
+		virtual bool ProcessInput(const InputState& CurrentInputState);
 		virtual void Update(float DeltaTime);
 		virtual void Render();
 		virtual void Destroy();

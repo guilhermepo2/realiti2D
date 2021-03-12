@@ -14,10 +14,14 @@ namespace Realiti2D {
 		}
 	}
 
-	void Entity::ProcessInput(const InputState& CurrentInputState) {
+	bool Entity::ProcessInput(const InputState& CurrentInputState) {
 		for (Component* c : m_Components) {
-			c->ProcessInput(CurrentInputState);
+			if (c->ProcessInput(CurrentInputState)) {
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	void Entity::Update(float DeltaTime) {
