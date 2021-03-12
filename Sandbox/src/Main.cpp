@@ -23,6 +23,8 @@ public:
 			m_Collider->CollisionCallback = BIND_COLLISION(&PlaneInput::ExecuteThis);
 		}
 
+		Owner->GetComponentOfType<Realiti2D::AnimatedSprite>()->Play("plane");
+
 	}
 
 	void ExecuteThis(Realiti2D::BoxCollider* Other) {
@@ -69,6 +71,7 @@ public:
 		DEBUG_INFO("starting app");
 
 		Realiti2D::LevelLoader::LoadLevel(this, "assets/SampleLevel.r2d");
+
 		Realiti2D::Entity* PlaneEntity = GetEntityByName("Plane");
 		PlaneEntity->AddComponent<PlaneInput>();
 	}

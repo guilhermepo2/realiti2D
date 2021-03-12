@@ -29,11 +29,17 @@
 				{
 					"type": "AnimatedSprite",
 					"properties": {
-						"animationFPS": 24,
-						"textures": [
-							"assets/tappyplane/PNG/Planes/planeBlue1.png",
-							"assets/tappyplane/PNG/Planes/planeBlue2.png",
-							"assets/tappyplane/PNG/Planes/planeBlue3.png"
+						"animationList": [
+							{
+								"animationName": "plane",
+								"animationFPS": 24,
+								"shouldLoop": true,
+								"animationTextures": [
+									"assets/tappyplane/PNG/Planes/planeBlue1.png",
+									"assets/tappyplane/PNG/Planes/planeBlue2.png",
+									"assets/tappyplane/PNG/Planes/planeBlue3.png"
+								]
+							}
 						]
 					}
 				},
@@ -61,31 +67,6 @@
 					"type": "Sprite",
 					"path": "assets/tappyplane/PNG/background.png",
 					"drawOrder": 0
-				}
-			]
-		},
-		{
-			"name": "CollisionBox",
-			"components": [
-				{
-					"type": "Transform",
-					"properties": {
-						"position": [ -465.0, 200.0 ],
-						"rotation": 0,
-						"scale": [ 1.0, 1.0 ]
-					}
-				},
-				{
-					"type": "Sprite",
-					"path": "assets/tappyplane/PNG/UI/MedalGold.png",
-					"drawOrder": 3
-				},
-				{
-					"type": "BoxCollider",
-					"properties": {
-						"min": [ -48.0, -48.0 ],
-						"max": [ 48.0, 48.0 ]
-					}
 				}
 			]
 		}

@@ -44,28 +44,29 @@ namespace Realiti2D {
 		const rapidjson::Value& Properties = AnimatedSpriteComponentJSON["properties"];
 		if (Properties.IsObject()) {
 
-			int AnimationFPS;
-			JsonHelper::GetInt(Properties, "animationFPS", AnimationFPS);
+			Realiti2D::AnimatedSprite& AnimationComponent = e.AddComponent<Realiti2D::AnimatedSprite>();
+			// Iterate throught animation list, animation contains: name, FPS, shouldloop, and a list of textures
+			const rapidjson::Value& AnimationList = Properties["animationList"];
+			if (AnimationList.IsArray()) {
+				for (auto& AnimationObject : AnimationList.GetArray()) {
+					int AnimationFPS;
+					bool bShouldLoop;
+					JsonHelper::GetInt(AnimationObject, "animationFPS", AnimationFPS);
+					JsonHelper::GetBool(AnimationObject, "shouldLoop", bShouldLoop);
 
-			std::vector<std::string> Textures;
-			if (Properties.HasMember("textures")) {
-				const rapidjson::Value& TexturesArray = Properties["textures"];
-				if (TexturesArray.IsArray()) {
-					for (rapidjson::SizeType i = 0; i < TexturesArray.Size(); i++) {
-						Textures.push_back(TexturesArray[i].GetString());
+					AnimationClip* anim = new AnimationClip(AnimationFPS, bShouldLoop);
+
+					if (AnimationObject["animationTextures"].IsArray()) {
+						for (auto& texture : AnimationObject["animationTextures"].GetArray()) {
+							anim->AddAnimationTexture(texture.GetString());
+						}
 					}
+
+					std::string AnimationName;
+					JsonHelper::GetString(AnimationObject, "animationName", AnimationName);
+					AnimationComponent.AddAnimationClip(AnimationName, anim);
 				}
 			}
-
-			Realiti2D::AnimatedSprite& AnimationComponent = e.AddComponent<Realiti2D::AnimatedSprite>();
-			// TODO: THIS IS BROKEN!
-			// the structure of animation component changed to allow having more than one animation
-			/*
-			AnimationComponent.SetAnimationFPS(AnimationFPS);
-			for (int i = 0; i < Textures.size(); i++) {
-				AnimationComponent.AddAnimationTexture(Textures[i]);
-			}
-			*/
 
 		}
 	}
