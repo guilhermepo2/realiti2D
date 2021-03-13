@@ -69,18 +69,7 @@ namespace Realiti2D {
 		for (BoxCollider* collider : m_WorldColliders) {
 			float t;
 			
-			Vector2 AABBMin = collider->GetTransform()->Position;
-			Vector2 MinPoint = collider->GetBoundingBox()->MinPoint;
-			MinPoint.x *= collider->GetTransform()->Scale.x;
-			MinPoint.y *= collider->GetTransform()->Scale.y;
-			AABBMin += MinPoint;
-
-			Vector2 AABBMax = collider->GetTransform()->Position;
-			Vector2 MaxPoint = collider->GetBoundingBox()->MaxPoint;
-			MaxPoint.x *= collider->GetTransform()->Scale.x;
-			MaxPoint.y *= collider->GetTransform()->Scale.y;
-			AABBMax += MaxPoint;
-			AABB ColliderAABB = { AABBMin, AABBMax };
+			AABB ColliderAABB = collider->GetWorldPositionAABB();
 
 			// More Debug
 			/*
@@ -124,16 +113,8 @@ namespace Realiti2D {
 	}
 
 	bool CollisionWorld::Overlaps(BoxCollider* a, BoxCollider* b) {
-		AABB a_AABB = {
-			Vector2(a->GetTransform()->Position.x + a->GetBoundingBox()->MinPoint.x, a->GetTransform()->Position.y + a->GetBoundingBox()->MinPoint.y),
-			Vector2(a->GetTransform()->Position.x + a->GetBoundingBox()->MaxPoint.x, a->GetTransform()->Position.y + a->GetBoundingBox()->MaxPoint.y),
-		};
-		
-		AABB b_AABB = {
-			Vector2(b->GetTransform()->Position.x + b->GetBoundingBox()->MinPoint.x, b->GetTransform()->Position.y + b->GetBoundingBox()->MinPoint.y),
-			Vector2(b->GetTransform()->Position.x + b->GetBoundingBox()->MaxPoint.x, b->GetTransform()->Position.y + b->GetBoundingBox()->MaxPoint.y),
-		};
-
+		AABB a_AABB = a->GetWorldPositionAABB();
+		AABB b_AABB = b->GetWorldPositionAABB();
 		return CheckCollision(a_AABB, b_AABB);
 	}
 }

@@ -38,6 +38,22 @@ namespace Realiti2D {
 			}
 		}
 
+		AABB GetScaledAABB() {
+			AABB t_aabb = {
+				Vector2(m_AABB.MinPoint.x * m_TransformReference->Scale.x, m_AABB.MinPoint.y * m_TransformReference->Scale.y),
+				Vector2(m_AABB.MaxPoint.x * m_TransformReference->Scale.x, m_AABB.MaxPoint.y * m_TransformReference->Scale.y)
+			};
+
+			return t_aabb;
+		}
+
+		AABB GetWorldPositionAABB() {
+			AABB t_aabb = GetScaledAABB();
+			t_aabb.MinPoint += m_TransformReference->Position;
+			t_aabb.MaxPoint += m_TransformReference->Position;
+			return t_aabb;
+		}
+
 		std::function<void(BoxCollider*)> CollisionCallback;
 		const std::string& GetTag() const { return m_ColliderTag; }
 	private:
