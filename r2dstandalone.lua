@@ -6,9 +6,11 @@ IncludeDir["SOIL"] = "%{prj.name}/thirdparty/soil-0.0.3/include"
 IncludeDir["GLM"] = "%{prj.name}/thirdparty/glm"
 IncludeDir["RAPIDJSON"] = "%{prj.name}/thirdparty/rapidjson-1.1.0/include"
 IncludeDir["DEARIMGUI"] = "%{prj.name}/thirdparty/dearimgui"
+IncludeDir["SDL_TTF"] = "%{prj.name}/thirdparty/SDL2_ttf-2.0.15/include"
 LibDir = {}
 LibDir["SDL2"] = "Realiti2D/thirdparty/SDL2-2.0.12/lib/x64"
 LibDir["GLEW"] = "Realiti2D/thirdparty/glew-2.1.0/lib/Release/x64"
+LibDir["SDL_TTF"] = "%{prj.name}/thirdparty/SDL2_ttf-2.0.15/lib/x64"
 
 project "Realiti2D"
     location "Realiti2D"
@@ -41,12 +43,14 @@ project "Realiti2D"
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.RAPIDJSON}",
 		"%{IncludeDir.DEARIMGUI}",
+		"%{IncludeDir.SDL_TTF}",
 	}
 	
 	libdirs
 	{
 		"%{LibDir.SDL2}",
 		"%{LibDir.GLEW}",
+		"%{LibDir.SDL_TTF}",
 	}
 
     links
@@ -54,6 +58,7 @@ project "Realiti2D"
 		"SDL2.lib",
 		"glew32.lib",
 		"opengl32.lib",
+		"SDL2_ttf.lib",
     }
 
     filter "system:windows"

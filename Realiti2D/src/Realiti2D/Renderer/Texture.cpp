@@ -52,4 +52,17 @@ namespace Realiti2D {
 	void Texture::SetActive() {
 		glBindTexture(GL_TEXTURE_2D, m_TextureID);
 	}
+
+	void Texture::CreateFromSurface(SDL_Surface* surface) {
+		m_Width = surface->w;
+		m_Height = surface->h;
+
+		// Generate a GL Texture
+		glGenTextures(1, &m_TextureID);
+		glBindTexture(GL_TEXTURE_2D, m_TextureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
 }

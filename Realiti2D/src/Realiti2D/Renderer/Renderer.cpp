@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "VertexArray.h"
 
+#include <SDL_ttf.h>
 #include <GL/glew.h>
 
 // todo: find a way to define this outside here (ideally on visions.cpp or on the premake file)
@@ -126,6 +127,12 @@ namespace Realiti2D {
 		}
 		
 		CreateDefaultSpriteVertex();
+
+		// Initializing Fonts.
+		if (TTF_Init() != 0) {
+			CORE_ERROR("Failed to initialize SDL_ttf!");
+			return false;
+		}
 		
 		CORE_INFO("[renderer] renderer initialized");
 		CORE_INFO("[renderer] initializing default textures...");

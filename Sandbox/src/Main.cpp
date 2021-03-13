@@ -7,12 +7,22 @@ public:
 	ObstacleComponent() {}
 	~ObstacleComponent() {}
 
+	void BeginPlay() override {
+		m_Transform = Owner->GetComponentOfType<Realiti2D::Transform>();
+	}
+
 	void Update(float DeltaTime) override {
-		Owner->GetComponentOfType<Realiti2D::Transform>()->Translate(Realiti2D::Vector2(m_Velocity * DeltaTime, 0.0f));
+
+		if (m_Transform->Position.x < -800.0f) {
+			m_Transform->Position.x = 800.0f;
+		}
+
+		m_Transform->Translate(Realiti2D::Vector2(m_Velocity * DeltaTime, 0.0f));
 	}
 
 private:
 	float m_Velocity = -100.0f;
+	Realiti2D::Transform* m_Transform;
 };
 
 class PlaneInput : public Realiti2D::Component {
@@ -23,6 +33,8 @@ public:
 
 	virtual void Initialize() {
 		DEBUG_INFO("Initialize Tappy Plane");
+		f = new Realiti2D::Font();
+		f->Load("assets/fonts/KenneyBlocks.ttf");
 	}
 
 	virtual void BeginPlay()  {
@@ -69,6 +81,9 @@ public:
 		else {
 			Owner->GetComponentOfType<Realiti2D::Transform>()->Rotation = -30.0f;
 		}
+
+		Realiti2D::Texture* t = f->RenderTexture("00", 30);
+		Realiti2D::Renderer::s_Instance->AddToRenderQueue(t, &(Owner->GetComponentOfType<Realiti2D::Transform>()->Position), 0.0f, &(Owner->GetComponentOfType<Realiti2D::Transform>()->Scale), 100);
 	}
 
 	void Destroy() {
@@ -76,6 +91,7 @@ public:
 	}
 
 private:
+	Realiti2D::Font* f;
 	float m_UpForce = 325.0f;
 	float m_VerticalVelocity = 0.0f;
 	float m_Gravity = 500.0f;
@@ -100,8 +116,13 @@ public:
 		Realiti2D::Entity& Obstacle = TheGameLayer->AddEntity("Obstacle");
 		Obstacle.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(25.0f, -150.0f), 0.0f, Realiti2D::Vector2(2.0f, 2.0f));
 		Obstacle.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/rock.png", 5);
-		Obstacle.AddComponent<Realiti2D::BoxCollider>("Obstacle", Realiti2D::Vector2(-50.0f, -115.0f), Realiti2D::Vector2(50.0f, 115.0f));
+		Obstacle.AddComponent<Realiti2D::BoxCollider>("Obstacle", Realiti2D::Vector2(-25.0f, -115.0f), Realiti2D::Vector2(25.0f, 115.0f));
 		Obstacle.AddComponent<ObstacleComponent>();
+
+		Realiti2D::Entity& Ground = TheGameLayer->AddEntity("Ground");
+		Ground.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, -340.0f), 0.0f, Realiti2D::Vector2(2.0f, 1.0f));
+		Ground.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/groundDirt.png", 1);
+		Ground.AddComponent<Realiti2D::BoxCollider>("Obstacle", Realiti2D::Vector2(-400.0f, -35.0f), Realiti2D::Vector2(400.0f, 20.0f));
 	}
 
 private:

@@ -1,7 +1,10 @@
 #pragma once
 #include <string>
 
+struct SDL_Surface;
+
 namespace Realiti2D {
+
 	class Texture {
 	public:
 		Texture();
@@ -10,6 +13,7 @@ namespace Realiti2D {
 		bool Load(const std::string& fileName);
 		void Unload();
 		void SetActive();
+		void CreateFromSurface(SDL_Surface* surface);
 
 		int GetWidth() const { return m_Width; }
 		int GetHeight() const { return m_Height; }
