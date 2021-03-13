@@ -22,6 +22,8 @@ namespace Realiti2D {
 		static Renderer* s_Instance;
 
 		bool Initialize(float ScreenWidth, float ScreenHeight, std::string WindowTitle);
+		
+		void PrepareToRender();
 		void Draw();
 		void Shutdown();
 
@@ -32,6 +34,7 @@ namespace Realiti2D {
 		inline std::string GetWindowTitle() const { return m_WindowTitle; }
 		inline SDL_Window* GetWindow() { return m_Window; }
 		inline SDL_GLContext& GetContext() { return m_GLContext; }
+		inline void SwapWindow() { SDL_GL_SwapWindow(m_Window); }
 
 
 		void AddToRenderQueue(Texture* Tex, Vector2* Pos, float Rot, Vector2* Scale, int DrawOrder);

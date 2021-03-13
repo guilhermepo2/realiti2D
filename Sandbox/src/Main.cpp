@@ -89,6 +89,7 @@ public:
 
 	void Start() override {
 		DEBUG_INFO("starting app");
+		PushLayer(new Realiti2D::BaseImGuiLayer());
 		Realiti2D::GameLayer* TheGameLayer = PushGameLayer();
 
 		Realiti2D::LevelLoader::LoadLevel(TheGameLayer, "assets/SampleLevel.r2d");

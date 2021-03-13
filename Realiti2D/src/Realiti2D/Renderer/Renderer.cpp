@@ -1,17 +1,16 @@
 #include "Color.h"
 #include "Realiti2D/Log.h"
-#include "Realiti2D/UI/DearImGui/ImGuiWindow.h"
+// #include "Realiti2D/UI/DearImGui/ImGuiWindow.h"
 #include "Renderer.h"
 #include "SpriteRenderData.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexArray.h"
 
-// dear imgui
-#include <imgui.h>
-#include <imgui_impl_sdl.h>
-#include <imgui_impl_opengl3.h>
 #include <GL/glew.h>
+
+// todo: find a way to define this outside here (ideally on visions.cpp or on the premake file)
+#define VISIONS_EDITOR
 
 
 #define DEFAULT_ASSETS_PATH std::string("C:\\workspace\\jumpv.main\\realiti2D\\Realiti2D\\src\\Realiti2D\\DefaultAssets\\")
@@ -92,11 +91,16 @@ namespace Realiti2D {
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);									// Enables double buffering
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
+		SDL_WindowFlags WindowFlags = SDL_WINDOW_OPENGL;
+#ifdef VISIONS_EDITOR
+		WindowFlags = (SDL_WindowFlags)(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+#endif
+
 		m_Window = SDL_CreateWindow(
 			m_WindowTitle.c_str(),
 			100, 100,				// top left and y coordinates of the window... whatever
 			static_cast<int>(m_ScreenWidth), static_cast<int>(m_ScreenHeight),
-			SDL_WINDOW_OPENGL
+			WindowFlags
 		);
 
 		if (!m_Window) {
@@ -106,6 +110,9 @@ namespace Realiti2D {
 
 		// Creating the OpenGL Context
 		m_GLContext = SDL_GL_CreateContext(m_Window);
+		SDL_GL_MakeCurrent(m_Window, m_GLContext);
+		SDL_GL_SetSwapInterval(1); // Enable vsync
+
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK) {
 			CORE_ERROR("[renderer] unable to initialize glew.");
@@ -128,20 +135,7 @@ namespace Realiti2D {
 		if (white != nullptr) { CORE_INFO("[renderer] Loaded white texture"); } 
 		else { CORE_WARNING("[renderer] failed to load white texture!"); }
 
-		// setting up Dear ImGui
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;	// enable keyboard control
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;		// enable docking
-		// io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// enable multi-viewport
-		ImGui::StyleColorsDark();
-
-		// setting up platform renderer backend
-		ImGui_ImplSDL2_InitForOpenGL(m_Window, m_GLContext);
-		const char* glsl_version = "#version 330";
-		ImGui_ImplOpenGL3_Init(glsl_version);
-		// TODO: Load Fonts (?)
+		// this should go to the game layer!
 		m_bRenderDearImGui = false;
 
 		m_White = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -185,8 +179,7 @@ namespace Realiti2D {
 		m_DefaultSpriteVertexArray = new VertexArray(vertices, 4, indices, 6);
 	}
 
-	void Renderer::Draw() {
-
+	void Renderer::PrepareToRender() {
 		glClearColor(
 			m_OrtographicCamera->R(),
 			m_OrtographicCamera->G(),
@@ -195,7 +188,7 @@ namespace Realiti2D {
 		);
 
 		glClear(GL_COLOR_BUFFER_BIT);
-		
+
 		glEnable(GL_BLEND);
 		glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
@@ -208,7 +201,9 @@ namespace Realiti2D {
 		Matrix4 ViewProj(m_OrtographicCamera->GetCameraViewProjection());
 		m_DefaultSpriteShader->SetMatrixUniform("uViewProj", ViewProj);
 		m_DefaultSpriteShader->SetColorUniform("uTintColor", m_White);
+	}
 
+	void Renderer::Draw() {
 		while (!m_SpriteRenderDataQueue.empty()) {
 			// Can this create a memory leak? =======================================
 			SpriteRenderData RenderData = m_SpriteRenderDataQueue[0];
@@ -237,15 +232,18 @@ namespace Realiti2D {
 			}
 		}
 
-		
 
+#ifdef VISIONS_EDITOR
+		
+#else
+		// this has to go to the GameLayer!
 		if (m_bRenderDearImGui) {
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplSDL2_NewFrame(m_Window);
 			ImGui::NewFrame();
 
 			// ImGui::ShowDemoWindow();
-			
+
 			for (int i = 0; i < m_ImGuiWindows.size(); i++) {
 				m_ImGuiWindows[i]->DrawWindow();
 			}
@@ -253,20 +251,14 @@ namespace Realiti2D {
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
+#endif
 
 		
-
-		SDL_GL_SwapWindow(m_Window);
+		
 	}
 
 	void Renderer::Shutdown() {
 		CORE_INFO("[renderer] shutting down renderer");
-
-		// shutting of Dear ImGui
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplSDL2_Shutdown();
-		ImGui::DestroyContext();
-
 		SDL_GL_DeleteContext(m_GLContext);
 		SDL_DestroyWindow(m_Window);
 	}

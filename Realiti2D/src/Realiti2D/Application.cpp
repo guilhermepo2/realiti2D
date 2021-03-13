@@ -7,8 +7,6 @@
 #include "Layer/LayerStack.h"
 #include "Layer/GameLayer.h"
 
-#include <imgui_impl_sdl.h>
-
 const unsigned int FPS = 60;
 const unsigned int FRAME_TARGET_TIME = 1000 / FPS;
 
@@ -35,6 +33,11 @@ namespace Realiti2D {
 
 		s_bIsInitialized = true;
 		m_bIsRunning = true;
+	}
+
+	void Application::PushLayer(Layer* _Layer) {
+		_Layer->Initialize();
+		m_LayerStack->PushLayer(_Layer);
 	}
 
 	GameLayer* Application::PushGameLayer() {
@@ -75,7 +78,10 @@ namespace Realiti2D {
 			// -------------------------------------------
 			ProcessInput();
 			Update(DeltaTime);
+
+			PrepareToRender();
 			Render();
+			PostRender();
 
 			// -------------------------------------------
 			int TimeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - m_TicksLastFrame);
@@ -88,14 +94,14 @@ namespace Realiti2D {
 	void Application::Start() { }
 
 	void Application::ProcessInput() {
-		// this has to be done before the new SDL Events are processed...
 		m_InputSystem->PrepareForUpdate();
 
 		SDL_Event FrameEvent;
 		while (SDL_PollEvent(&FrameEvent)) {
 
-			// some layering system thing would come in handy here...
-			ImGui_ImplSDL2_ProcessEvent(&FrameEvent);
+			for (Layer* l : m_LayerStack->GetLayers()) {
+				l->OnSDLEvent(&FrameEvent);
+			}
 
 			switch (FrameEvent.type) {
 			case SDL_QUIT:
@@ -131,14 +137,27 @@ namespace Realiti2D {
 
 	}
 
-	void Application::Render() {
+	void Application::PrepareToRender() {
+		m_Renderer->PrepareToRender();
 
+		for (Layer* l : m_LayerStack->GetLayers()) {
+			l->PrepareToRender();
+		}
+	}
+
+	void Application::Render() {
 		for (Layer* l : m_LayerStack->GetLayers()) {
 			l->Render();
 		}
 
 		m_Renderer->Draw();
+	}
 
-		return;
+	void Application::PostRender() {
+		for (Layer* l : m_LayerStack->GetLayers()) {
+			l->PostRender();
+		}
+
+		m_Renderer->SwapWindow();
 	}
 }

@@ -7,6 +7,7 @@ namespace Realiti2D {
 	class EntityManager;
 	class GameLayer;
 	class InputSystem;
+	class Layer;
 	class LayerStack;
 	class Renderer;
 
@@ -18,12 +19,16 @@ namespace Realiti2D {
 		void Run();
 
 		static bool s_bIsInitialized;
+		void PushLayer(Layer* _Layer);
 
 	protected:
 		virtual void Start();
 		void ProcessInput();
 		void Update(float DeltaTime);
+
+		void PrepareToRender();
 		void Render();
+		void PostRender();
 
 		GameLayer* PushGameLayer();
 

@@ -27,10 +27,6 @@ namespace Realiti2D {
 		m_CollisionWorld->VerifyAllCollisions();
 	}
 
-	void GameLayer::ImGuiRender() {
-
-	}
-
 	bool GameLayer::OnSDLEvent(SDL_Event& Event) {
 		return false;
 	}
