@@ -15,7 +15,6 @@ namespace Realiti2D {
 
 		void BeginPlay();
 		void Update(float DeltaTime);
-		void ImGuiRender();
 		bool OnSDLEvent(SDL_Event& Event);
 		bool OnApplicationEvent(const InputState& CurrentInputState);
 		void Render();

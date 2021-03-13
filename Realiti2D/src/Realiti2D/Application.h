@@ -19,6 +19,7 @@ namespace Realiti2D {
 		void Run();
 
 		static bool s_bIsInitialized;
+		void PushLayer(Layer* _Layer);
 
 	protected:
 		virtual void Start();
@@ -29,7 +30,6 @@ namespace Realiti2D {
 		void Render();
 		void PostRender();
 
-		void PushLayer(Layer* _Layer);
 		GameLayer* PushGameLayer();
 
 	private:

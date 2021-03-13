@@ -14,6 +14,7 @@ namespace Realiti2D {
 
 		virtual void BeginPlay() {}
 		virtual void Update(float DeltaTime) {}
+
 		virtual bool OnSDLEvent(SDL_Event* Event) { return false; }
 		virtual bool OnApplicationEvent(const InputState& CurrentInputState) { return false; }
 

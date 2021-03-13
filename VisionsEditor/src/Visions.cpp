@@ -7,51 +7,11 @@
 #include <imgui_impl_opengl3.h>
 #include <GL/glew.h>
 
-class VisionsLayer : public Realiti2D::Layer {
+class VisionsWindow : public Realiti2D::ImGuiWindow {
 public:
-	VisionsLayer() : Realiti2D::Layer("Visions") {}
+	VisionsWindow(Realiti2D::Application* app, const std::string& WindowName) : ImGuiWindow(app, WindowName) {}
 
-	void Initialize() {
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;	// enable keyboard control
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;		// enable docking
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// enable multi-viewport
-		ImGui::StyleColorsDark();
-
-		ImGuiStyle& style = ImGui::GetStyle();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-			style.WindowRounding = 0.0f;
-			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-		}
-
-		// setting up platform renderer backend
-		ImGui_ImplSDL2_InitForOpenGL(
-			Realiti2D::Renderer::s_Instance->GetWindow(),
-			Realiti2D::Renderer::s_Instance->GetContext()
-		);
-		ImGui_ImplOpenGL3_Init("#version 330");
-		// TODO: Load Fonts (?)
-	}
-
-	void Destroy() {
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplSDL2_Shutdown();
-		ImGui::DestroyContext();
-	}
-
-	bool OnSDLEvent(SDL_Event* Event) {
-		return ImGui_ImplSDL2_ProcessEvent(Event);
-	}
-
-	void PrepareToRender() {
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL2_NewFrame(Realiti2D::Renderer::s_Instance->GetWindow());
-		ImGui::NewFrame();
-	}
-
-	virtual void Render() {
+	void DrawWindow() {
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
 		if (ImGui::BeginMainMenuBar()) {
@@ -69,25 +29,24 @@ public:
 			ImGui::EndMainMenuBar();
 		}
 
-		ImGui::ShowDemoWindow();
-	}
-
-	virtual void PostRender() {
-		ImGui::Render();
-
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-			SDL_Window* BackupCurrentWindow = SDL_GL_GetCurrentWindow();
-			SDL_GLContext BackupCurrentContext = SDL_GL_GetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			SDL_GL_MakeCurrent(BackupCurrentWindow, BackupCurrentContext);
+		ImGui::Begin("Entities");
+		for (int i = 0; i < m_Entities.size(); i++) {
+			ImGui::LabelText("Name", "Entity");
 		}
+
+		if (ImGui::SmallButton("Add Entity")) {
+			m_Entities.push_back("Entity");
+		}
+
+		if (ImGui::SmallButton("Save JSON")) {
+			//
+		}
+
+		ImGui::End();
 	}
+
+private:
+	std::vector<std::string> m_Entities;
 };
 
 class Visions : public Realiti2D::Application {
@@ -97,8 +56,10 @@ public:
 
 	void Start() override {
 		DEBUG_INFO("Starting Visions Editor]");
-		VisionsLayer* l = new VisionsLayer();
+		Realiti2D::BaseImGuiLayer* l = new Realiti2D::BaseImGuiLayer();
 		PushLayer(l);
+
+		VisionsWindow* w = new VisionsWindow(this, "Visions Editor");
 	}
 
 private:

@@ -146,15 +146,11 @@ namespace Realiti2D {
 	}
 
 	void Application::Render() {
-
-		m_Renderer->Draw();
-
 		for (Layer* l : m_LayerStack->GetLayers()) {
 			l->Render();
 		}
 
-
-		return;
+		m_Renderer->Draw();
 	}
 
 	void Application::PostRender() {

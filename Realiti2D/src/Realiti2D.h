@@ -8,6 +8,8 @@
 #include "Realiti2D/Layer/LayerStack.h"
 #include "Realiti2D/Layer/Layer.h"
 #include "Realiti2D/Layer/GameLayer.h"
+#include "Realiti2D/Layer/BaseImGuiSetup.h"
+#include "Realiti2D/Layer/ImGuiWindow.h"
 
 #include "Realiti2D/Entity/Entity.h"
 #include "Realiti2D/Entity/EntityManager.h"
@@ -30,6 +32,3 @@
 // Collision
 #include "Realiti2D/Collision/Collider.h"
 #include "Realiti2D/Collision/CollisionWorld.h"
-
-// UI
-#include "Realiti2D/UI/DearImGui/ImGuiWindow.h"
