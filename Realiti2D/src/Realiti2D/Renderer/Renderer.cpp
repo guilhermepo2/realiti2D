@@ -1,16 +1,12 @@
 #include "Color.h"
 #include "Realiti2D/Log.h"
-#include "Realiti2D/UI/DearImGui/ImGuiWindow.h"
+// #include "Realiti2D/UI/DearImGui/ImGuiWindow.h"
 #include "Renderer.h"
 #include "SpriteRenderData.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "VertexArray.h"
 
-// dear imgui
-#include <imgui.h>
-#include <imgui_impl_sdl.h>
-#include <imgui_impl_opengl3.h>
 #include <GL/glew.h>
 
 // todo: find a way to define this outside here (ideally on visions.cpp or on the premake file)
@@ -139,30 +135,7 @@ namespace Realiti2D {
 		if (white != nullptr) { CORE_INFO("[renderer] Loaded white texture"); } 
 		else { CORE_WARNING("[renderer] failed to load white texture!"); }
 
-		// setting up Dear ImGui
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;	// enable keyboard control
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;		// enable docking
-#ifdef VISIONS_EDITOR
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;		// enable multi-viewport
-#endif
-		ImGui::StyleColorsDark();
-
-#ifdef VISIONS_EDITOR
-		ImGuiStyle& style = ImGui::GetStyle();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-			style.WindowRounding = 0.0f;
-			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-		}
-#endif
-
-		// setting up platform renderer backend
-		ImGui_ImplSDL2_InitForOpenGL(m_Window, m_GLContext);
-		const char* glsl_version = "#version 330";
-		ImGui_ImplOpenGL3_Init(glsl_version);
-		// TODO: Load Fonts (?)
+		// this should go to the game layer!
 		m_bRenderDearImGui = false;
 
 		m_White = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -206,8 +179,7 @@ namespace Realiti2D {
 		m_DefaultSpriteVertexArray = new VertexArray(vertices, 4, indices, 6);
 	}
 
-	void Renderer::Draw() {
-
+	void Renderer::PrepareToRender() {
 		glClearColor(
 			m_OrtographicCamera->R(),
 			m_OrtographicCamera->G(),
@@ -216,7 +188,7 @@ namespace Realiti2D {
 		);
 
 		glClear(GL_COLOR_BUFFER_BIT);
-		
+
 		glEnable(GL_BLEND);
 		glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
@@ -229,7 +201,9 @@ namespace Realiti2D {
 		Matrix4 ViewProj(m_OrtographicCamera->GetCameraViewProjection());
 		m_DefaultSpriteShader->SetMatrixUniform("uViewProj", ViewProj);
 		m_DefaultSpriteShader->SetColorUniform("uTintColor", m_White);
+	}
 
+	void Renderer::Draw() {
 		while (!m_SpriteRenderDataQueue.empty()) {
 			// Can this create a memory leak? =======================================
 			SpriteRenderData RenderData = m_SpriteRenderDataQueue[0];
@@ -260,63 +234,9 @@ namespace Realiti2D {
 
 
 #ifdef VISIONS_EDITOR
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplSDL2_NewFrame(m_Window);
-		ImGui::NewFrame();
-
-		// ======================================================================================
-		// ======================================================================================
-		// Editor Stuff goes here!
-		// have im gui layers here and iterate through them...
-
-		// Create Dockspace...
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-
-		if (ImGui::BeginMainMenuBar()) {
-			
-			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Options")) {
-				if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-				ImGui::EndMenu();
-			}
-
-			ImGui::EndMainMenuBar();
-		}
-
-		ImGui::ShowDemoWindow();
-		/*
-
-		{
-			ImGui::Begin("Hierarchy");
-			ImGui::End();
-
-			ImGui::Begin("Scene");
-			ImGui::End();
-		}
-		*/
-
-		// ======================================================================================
-		// ======================================================================================
-
-		ImGui::Render();
-
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-			SDL_Window* BackupCurrentWindow = SDL_GL_GetCurrentWindow();
-			SDL_GLContext BackupCurrentContext = SDL_GL_GetCurrentContext();
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			SDL_GL_MakeCurrent(BackupCurrentWindow, BackupCurrentContext);
-		}
+		
 #else
+		// this has to go to the GameLayer!
 		if (m_bRenderDearImGui) {
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplSDL2_NewFrame(m_Window);
@@ -334,17 +254,11 @@ namespace Realiti2D {
 #endif
 
 		
-		SDL_GL_SwapWindow(m_Window);
+		
 	}
 
 	void Renderer::Shutdown() {
 		CORE_INFO("[renderer] shutting down renderer");
-
-		// shutting of Dear ImGui
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplSDL2_Shutdown();
-		ImGui::DestroyContext();
-
 		SDL_GL_DeleteContext(m_GLContext);
 		SDL_DestroyWindow(m_Window);
 	}

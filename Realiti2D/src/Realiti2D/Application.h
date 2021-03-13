@@ -24,7 +24,10 @@ namespace Realiti2D {
 		virtual void Start();
 		void ProcessInput();
 		void Update(float DeltaTime);
+
+		void PrepareToRender();
 		void Render();
+		void PostRender();
 
 		void PushLayer(Layer* _Layer);
 		GameLayer* PushGameLayer();

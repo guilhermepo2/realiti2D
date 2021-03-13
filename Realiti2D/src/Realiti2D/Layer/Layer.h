@@ -14,10 +14,12 @@ namespace Realiti2D {
 
 		virtual void BeginPlay() {}
 		virtual void Update(float DeltaTime) {}
-		virtual void ImGuiRender() {}
-		virtual bool OnSDLEvent(SDL_Event& Event) { return false; }
+		virtual bool OnSDLEvent(SDL_Event* Event) { return false; }
 		virtual bool OnApplicationEvent(const InputState& CurrentInputState) { return false; }
+
+		virtual void PrepareToRender() {}
 		virtual void Render() {}
+		virtual void PostRender() {}
 
 	private:
 		std::string m_LayerName;
