@@ -37,6 +37,11 @@ namespace Realiti2D {
 		m_bIsRunning = true;
 	}
 
+	void Application::PushLayer(Layer* _Layer) {
+		_Layer->Initialize();
+		m_LayerStack->PushLayer(_Layer);
+	}
+
 	GameLayer* Application::PushGameLayer() {
 		GameLayer* gl = new GameLayer();
 		gl->Initialize();
