@@ -33,8 +33,6 @@ public:
 
 	virtual void Initialize() {
 		DEBUG_INFO("Initialize Tappy Plane");
-		f = new Realiti2D::Font();
-		f->Load("assets/fonts/KenneyBlocks.ttf");
 	}
 
 	virtual void BeginPlay()  {
@@ -81,9 +79,6 @@ public:
 		else {
 			Owner->GetComponentOfType<Realiti2D::Transform>()->Rotation = -30.0f;
 		}
-
-		Realiti2D::Texture* t = f->RenderTexture("00", 30);
-		Realiti2D::Renderer::s_Instance->AddToRenderQueue(t, &(Owner->GetComponentOfType<Realiti2D::Transform>()->Position), 0.0f, &(Owner->GetComponentOfType<Realiti2D::Transform>()->Scale), 100);
 	}
 
 	void Destroy() {
@@ -91,7 +86,6 @@ public:
 	}
 
 private:
-	Realiti2D::Font* f;
 	float m_UpForce = 325.0f;
 	float m_VerticalVelocity = 0.0f;
 	float m_Gravity = 500.0f;
@@ -123,6 +117,10 @@ public:
 		Ground.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, -340.0f), 0.0f, Realiti2D::Vector2(2.0f, 1.0f));
 		Ground.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/groundDirt.png", 1);
 		Ground.AddComponent<Realiti2D::BoxCollider>("Obstacle", Realiti2D::Vector2(-400.0f, -35.0f), Realiti2D::Vector2(400.0f, 20.0f));
+
+		Realiti2D::UIScreen* HUD = new Realiti2D::UIScreen();
+		HUD->AddTextElement("Points", Realiti2D::Vector2(0.0f, 325.0f), "assets/fonts/KenneyBlocks.ttf");
+		TheGameLayer->PushUIScreen(HUD);
 	}
 
 private:

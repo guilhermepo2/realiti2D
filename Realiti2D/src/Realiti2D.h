@@ -35,3 +35,5 @@
 
 // UI
 #include "Realiti2D/UI/Font.h"
+#include "Realiti2D/UI/FontComponent.h"
+#include "Realiti2D/UI/UIScreen.h"

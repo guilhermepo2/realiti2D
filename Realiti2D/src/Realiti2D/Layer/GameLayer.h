@@ -7,6 +7,7 @@ namespace Realiti2D {
 
 	class CollisionWorld;
 	class EntityManager;
+	class UIScreen;
 
 	class GameLayer : public Layer {
 	public:
@@ -22,7 +23,10 @@ namespace Realiti2D {
 		Entity& AddEntity(std::string InName) { return m_EntityManager->AddEntity(InName); };
 		Entity* GetEntityByName(std::string InName) { return m_EntityManager->GetEntityByName(InName); }
 
+		inline void PushUIScreen(UIScreen* ui) { m_UIScreenStack.push_back(ui); }
+
 	private:
+		std::vector<UIScreen*> m_UIScreenStack;
 		EntityManager* m_EntityManager;
 		CollisionWorld* m_CollisionWorld;
 		bool m_bShowDebugColliders;
