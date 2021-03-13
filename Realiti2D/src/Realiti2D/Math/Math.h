@@ -34,5 +34,15 @@ namespace Realiti2D::Math {
 		return glm::sign(Value);
 	}
 
+	template<typename T>
+	T Sin(const T& Value) {
+		return glm::sin(Value);
+	}
+
+	template<typename T>
+	T Cos(const T& Value) {
+		return glm::cos(Value);
+	}
+
 	const static float FloatInfinity = std::numeric_limits<float>::max();
 }

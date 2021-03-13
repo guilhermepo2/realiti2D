@@ -2,6 +2,28 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+class GroundMove : public Realiti2D::Component {
+public:
+	GroundMove() {}
+	~GroundMove() {}
+
+	void BeginPlay() override {
+		m_Timer = 0.0f;
+		m_OriginalY = Owner->GetComponentOfType<Realiti2D::Transform>()->Position.y;
+	}
+
+	void Update(float DeltaTime) override {
+		m_Timer += DeltaTime;
+
+		float Sin = Realiti2D::Math::Sin(m_Timer) * 10.0f;
+		Owner->GetComponentOfType<Realiti2D::Transform>()->Position.y = (m_OriginalY + Sin);
+	}
+
+private:
+	float m_Timer;
+	float m_OriginalY;
+};
+
 class ObstacleComponent : public Realiti2D::Component {
 public:
 	ObstacleComponent() {}
@@ -117,6 +139,7 @@ public:
 		Ground.AddComponent<Realiti2D::Transform>(Realiti2D::Vector2(0.0f, -340.0f), 0.0f, Realiti2D::Vector2(2.0f, 1.0f));
 		Ground.AddComponent<Realiti2D::Sprite>("assets/tappyplane/PNG/groundDirt.png", 1);
 		Ground.AddComponent<Realiti2D::BoxCollider>("Obstacle", Realiti2D::Vector2(-400.0f, -35.0f), Realiti2D::Vector2(400.0f, 20.0f));
+		Ground.AddComponent<GroundMove>();
 
 		Realiti2D::UIScreen* HUD = new Realiti2D::UIScreen();
 		HUD->AddTextElement("Points", Realiti2D::Vector2(0.0f, 325.0f), "assets/fonts/KenneyBlocks.ttf");

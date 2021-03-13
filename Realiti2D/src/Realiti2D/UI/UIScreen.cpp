@@ -25,7 +25,12 @@ namespace Realiti2D {
 		Entity* e = new Entity(Name);
 		e->AddComponent<Transform>(Position, 0.0f, Vector2(1.0f, 1.0f));
 		FontComponent& fc = e->AddComponent<FontComponent>(FontAsset);
+
+		// TODO: This text has to be altered somehow...
 		fc.UpdateText("Points: 0");
+
+		// Maybe give the text element a KEY, and a callback function
+		// and then it searches on the callback function for the text to render with the KEY
 
 		m_UIEntities.push_back(e);
 	}
