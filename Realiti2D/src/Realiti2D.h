@@ -28,6 +28,7 @@
 // Utilities
 #include "Realiti2D/Utilities/JsonHelper.h"
 #include "Realiti2D/Utilities/LevelLoader.h"
+#include "Realiti2D/Utilities/EventHandler.h"
 
 // Collision
 #include "Realiti2D/Collision/Collider.h"
@@ -35,5 +36,4 @@
 
 // UI
 #include "Realiti2D/UI/Font.h"
-#include "Realiti2D/UI/FontComponent.h"
 #include "Realiti2D/UI/UIScreen.h"

@@ -141,9 +141,14 @@ public:
 		Ground.AddComponent<Realiti2D::BoxCollider>("Obstacle", Realiti2D::Vector2(-400.0f, -35.0f), Realiti2D::Vector2(400.0f, 20.0f));
 		Ground.AddComponent<GroundMove>();
 
-		Realiti2D::UIScreen* HUD = new Realiti2D::UIScreen();
-		HUD->AddTextElement("Points", Realiti2D::Vector2(0.0f, 325.0f), "assets/fonts/KenneyBlocks.ttf");
-		TheGameLayer->PushUIScreen(HUD);
+		Realiti2D::EventHandler<int> MyHandler;
+		MyHandler += [](void*, int data) { DEBUG_INFO("DATA: {0}", data); };
+		MyHandler.Invoke(this, 2);
+
+	}
+
+	void MyFunction(void* t, int data) {
+		DEBUG_INFO("Data: {0}", data);
 	}
 
 private:
