@@ -142,13 +142,23 @@ public:
 		Ground.AddComponent<GroundMove>();
 
 		Realiti2D::EventHandler<int> MyHandler;
-		MyHandler += [](void*, int data) { DEBUG_INFO("DATA: {0}", data); };
-		MyHandler.Invoke(this, 2);
+		int MyHandlerID1 = MyHandler.Register( R2D_EVENT( &Sandbox::MyFunction ) );
+		int MyHandlerID2 = MyHandler.Register( R2D_EVENT( &Sandbox::MyFunction2) );
+		MyHandler.Invoke( this, 2 );
+		MyHandler.Unregister( MyHandlerID2 );
+		MyHandler.Unregister( MyHandlerID1 );
+
+		MyHandler.Invoke(this, 4);
+		MyHandler.Invoke(this, 6);
 
 	}
 
-	void MyFunction(void* t, int data) {
-		DEBUG_INFO("Data: {0}", data);
+	void MyFunction(void* sender, int d) {
+		DEBUG_INFO("Sandbox MyFunction: {0}", d);
+	}
+
+	void MyFunction2(void* sender, int d) {
+		DEBUG_INFO("SAndbox MyFunction2: {0}", d);
 	}
 
 private:
